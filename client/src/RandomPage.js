@@ -19,18 +19,18 @@ const FancyBackground = styled.div`
   color: white;
 `;
 
-class RandomPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { content: "", link: "" };
-  }
-
-  getBackgroundColors() {
+export const getBackgroundColors = () => {
     const gradientColors = gradients[Math.floor(Math.random() * gradients.length)].colors
     return {
       first: gradientColors[0],
       second: gradientColors[1]
     };
+  }
+
+class RandomPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { content: "", link: "" };
   }
 
   getRandomPiece() {
@@ -47,7 +47,7 @@ class RandomPage extends Component {
   }
 
   render() {
-    const colors = this.getBackgroundColors();
+    const colors = getBackgroundColors();
     return (
       <App className="App">
         <FancyBackground colors={colors} className="App-content">
