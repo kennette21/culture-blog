@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const List = styled.div`
 `;
 
-class PiecesList extends Component {
+class PiecesPage extends Component {
     // api call to get all pieces from the api goes here
 
     render() {
@@ -17,3 +17,5 @@ class PiecesList extends Component {
         );
       }
 }
+
+export default PiecesPage;

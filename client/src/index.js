@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import { Router } from '@reach/router'
 import * as serviceWorker from './serviceWorker';
+import RandomPage from './RandomPage';
+import PiecesPage from './PiecesPage';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Router>
+    <RandomPage path="/random" />
+    <PiecesPage path="/all" />
+  </Router>,
   document.getElementById('root')
 );
 
