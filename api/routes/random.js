@@ -12,20 +12,8 @@ router.get("/", async function(req, res, next) {
     };
     const conn = await connection(dbConfig).catch(e => {});
     const results = await query(conn, 'SELECT *  FROM pieces ORDER BY RAND() LIMIT 1;').catch(console.log); // todo: extract the random fetching into its own function
-    const response = {"content": results[0].content, "link": results[0].link};
+    const response = {"piece": results[0]};
     res.json(response);
 });
-
-// the raw way that did not work because of asyncronous shit:
-// connection.query('SELECT *  FROM pieces ORDER BY RAND() LIMIT 1;', function (err, rows, fields) {
-    //     if (err) throw err
-      
-    //     console.log('The row is: ', rows[0])
-    //     console.log(rows[0].content);
-    //     content = rows[0].content;
-    //     link = rows[0].link;
-        
-    //     return {"content": content, "link": link};
-    // });
 
 module.exports = router;

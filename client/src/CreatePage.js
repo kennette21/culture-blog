@@ -31,6 +31,7 @@ class CreatePage extends Component {
             name: '',
             link: '',
             why: '',
+            category: '',
             colors: {},
         };
     }
@@ -41,8 +42,41 @@ class CreatePage extends Component {
 
     handleSubmit(event) {
         console.log("and the state is", this.state);
-        alert('A name was submitted: ' + this.state.name);
+        const piece = {
+            name: this.state.name,
+            link: this.state.link,
+            why: this.state.why,
+            category: this.state.category,
+        };
+        console.log("here is piece going to craete piece: ", piece)
+        this.createPiece(piece);
         event.preventDefault();
+    }
+
+    // Example POST method implementation:
+    async postData(url = '', data = {}) {
+        // Default options are marked with *
+        console.log("in post data, here is the data: ", data);
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+    }
+
+    createPiece(piece) {
+        this.postData('http://localhost:9000/api/create', piece)
+            .then(data => {
+                console.log(data); // JSON data parsed by `data.json()` call
+            });
     }
 
     componentDidMount() {
@@ -66,6 +100,13 @@ class CreatePage extends Component {
                             Why:
                         <input type="text" value={this.state.why} onChange={event => this.handleChange({why: event.target.value})} />
                         </label>
+                        <select value={this.state.value} onChange={event => this.handleChange({category: event.target.value})}>
+                            <option value="listen">Listen</option>
+                            <option value="watch">Watch</option>
+                            <option value="read">Read</option>
+                            <option value="look">Look</option>
+                            <option value="do">Do</option>
+                        </select>
                         <input type="submit" value="Submit" />
                     </PieceForm>
                 </FancyBackground>

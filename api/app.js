@@ -4,12 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require("cors");
+const bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var testAPIRouter = require('./routes/testAPI');
 var random = require('./routes/random');
 var all = require('./routes/all');
+var create = require('./routes/createPiece');
 
 var app = express();
 
@@ -19,6 +21,10 @@ app.set('view engine', 'jade');
 
 app.use(cors());
 app.use(logger('dev'));
+// Configuring body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -28,7 +34,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/testAPI', testAPIRouter);
 app.use('/api/random', random);
-app.use('api/all', all);
+app.use('/api/all', all);
+app.use('/api/create', create);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

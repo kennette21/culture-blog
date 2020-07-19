@@ -30,15 +30,17 @@ export const getBackgroundColors = () => {
 class RandomPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { content: "", link: "" };
+    this.state = { content: "", link: "", title: "", why: "" };
   }
 
   getRandomPiece() {
     fetch("http://localhost:9000/api/random")
         .then(res => res.json())
         .then(res => this.setState({
-            content: res.content,
-            link: res.link 
+            title: res.piece.title,
+            content: res.piece.content,
+            link: res.piece.link,
+            why: res.piece.why,
           }));
   }
 
@@ -53,8 +55,11 @@ class RandomPage extends Component {
         <FancyBackground colors={colors} className="App-content">
           <div>
             <div onClick={() => this.getRandomPiece()}>RELOAD</div>
-            <p className="App-intro"> The content is: {this.state.content}</p>
+            <h3>{this.state.title}</h3>
+            <p className="content">{this.state.content}</p>
             <a href={this.state.link}> Visit this Content </a>
+            <h5>Why This is Worth?</h5>
+            <p>{this.state.why}</p>
           </div>
           <p className="App-intro">{this.state.apiResponse}</p>
         </FancyBackground>
