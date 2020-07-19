@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import gradients from './gradients'
+import styled from 'styled-components';
+
 import './App.css';
+
+const FancyBackground = styled.div`
+  background: ${props => props.colors.first || "#bdc3c7"};
+  background: -webkit-linear-gradient(to right, ${props => props.colors.first}, ${props => props.colors.second});
+  background: linear-gradient(to right, ${props => props.colors.first}, ${props => props.colors.second});
+`;
 
 class App extends Component {
   constructor(props) {
@@ -8,29 +16,39 @@ class App extends Component {
     this.state = { content: "", link: "" };
   }
 
-  callAPI() {
-      fetch("http://localhost:9000/api/random")
-          .then(res => res.json())
-          .then(res => this.setState({
-              content: res.content,
-              link: res.link 
-            }));
+  getBackgroundColors() {
+    const gradientColors = gradients[Math.floor(Math.random() * gradients.length)].colors
+    return {
+      first: gradientColors[0],
+      second: gradientColors[1]
+    };
+  }
+
+  getRandomPiece() {
+    fetch("http://localhost:9000/api/random")
+        .then(res => res.json())
+        .then(res => this.setState({
+            content: res.content,
+            link: res.link 
+          }));
   }
 
   componentWillMount() {
-      this.callAPI();
+      this.getRandomPiece();
   }
 
   render() {
-      return (
+    const colors = this.getBackgroundColors();
+    return (
       <div className="App">
-        <header className="App-header">
+        <FancyBackground colors={colors} className="App-header">
           <div>
-            <p className="App-intro">;{this.state.content}</p>
+            <div onClick={() => this.getRandomPiece()}>RELOAD</div>
+            <p className="App-intro"> The content is: {this.state.content}</p>
             <a href={this.state.link}> Visit this Content </a>
           </div>
-          <p className="App-intro">;{this.state.apiResponse}</p>
-        </header>
+          <p className="App-intro">{this.state.apiResponse}</p>
+        </FancyBackground>
       </div>
     );
   }
