@@ -6,12 +6,14 @@ import * as serviceWorker from './serviceWorker';
 import RandomPage from './RandomPage';
 import PiecesPage from './PiecesPage';
 import CreatePage from './CreatePage';
+import LoginPage from './LoginPage';
 
 ReactDOM.render(
   <Router>
     <RandomPage path="/random" />
     <PiecesPage path="/all" />
     <CreatePage path="/create" />
+    <LoginPage path="/login" />
   </Router>,
   document.getElementById('root')
 );
