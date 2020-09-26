@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { Router } from '@reach/router'
 import * as serviceWorker from './serviceWorker';
-import RandomPage from './RandomPage';
-import PiecesPage from './PiecesPage';
-import CreatePage from './CreatePage';
-import LoginPage from './LoginPage';
+import RandomPage from './components/RandomPage';
+import PiecesPage from './components/PiecesPage';
+import CreatePage from './components/CreatePage';
+import LoginPage from './components/LoginPage';
+import SignoutPage from './components/SignoutPage';
 
 ReactDOM.render(
   <Router>
@@ -14,6 +15,7 @@ ReactDOM.render(
     <PiecesPage path="/all" />
     <CreatePage path="/create" />
     <LoginPage path="/login" />
+    <SignoutPage path="/logout" />
   </Router>,
   document.getElementById('root')
 );

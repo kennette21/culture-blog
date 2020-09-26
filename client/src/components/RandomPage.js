@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
-import gradients from './gradients'
+import getBackgroundColors from '../gradients'
 import styled from 'styled-components';
-import FancyBackground from './styles';
+import FancyBackground from '../styles';
+import Header from './common/Header';
 
 const App = styled.div`
     text-align: center;
 `;
 
-export const getBackgroundColors = () => {
-    const gradientColors = gradients[Math.floor(Math.random() * gradients.length)].colors
-    return {
-      first: gradientColors[0],
-      second: gradientColors[1]
-    };
-  }
-
 class RandomPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { content: "", link: "", title: "", why: "" };
+    this.state = { 
+      content: "",
+      link: "",
+      title: "",
+      why: "",
+      colors: getBackgroundColors(),
+     };
   }
 
   getRandomPiece() {
@@ -37,17 +36,18 @@ class RandomPage extends Component {
   }
 
   render() {
-    const colors = getBackgroundColors();
+    const {title, content, link, why, colors} = this.state
     return (
       <App className="App">
         <FancyBackground colors={colors} className="App-content">
+          <Header/>
           <div>
             <div onClick={() => this.getRandomPiece()}>RELOAD</div>
-            <h3>{this.state.title}</h3>
-            <p className="content">{this.state.content}</p>
-            <a href={this.state.link}> Visit this Content </a>
+            <h3>{title}</h3>
+            <p className="content">{content}</p>
+            <a href={link}> Visit this Content </a>
             <h5>Why This is Worth?</h5>
-            <p>{this.state.why}</p>
+            <p>{why}</p>
           </div>
           <p className="App-intro">{this.state.apiResponse}</p>
         </FancyBackground>

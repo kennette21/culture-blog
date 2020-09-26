@@ -1536,4 +1536,12 @@ const gradients = [
     }
 ]
 
-export default gradients;
+export const getBackgroundColors = () => {
+    const gradientColors = gradients[Math.floor(Math.random() * gradients.length)].colors
+    return {
+      first: gradientColors[0],
+      second: gradientColors[1]
+    };
+  }
+
+export default getBackgroundColors;

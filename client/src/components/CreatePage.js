@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { getBackgroundColors } from './RandomPage';
-import FancyBackground from './styles';
+import getBackgroundColors from '../gradients';
+import FancyBackground from '../styles';
 
 const App = styled.div`
     text-align: center;

@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+export const App = styled.div`
+    text-align: center;
+`;
+
+
 export const FancyBackground = styled.div`
   background: ${props => props.colors.first || "#bdc3c7"};
   background: -webkit-linear-gradient(to right, ${props => props.colors.first}, ${props => props.colors.second});
