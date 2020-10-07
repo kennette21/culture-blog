@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import getBackgroundColors from '../gradients';
 import FancyBackground from '../styles';
+import firebase from '../firebase';
+import Header from './common/Header';
 
 const App = styled.div`
     text-align: center;
@@ -29,42 +31,22 @@ class CreatePage extends Component {
     }
 
     handleSubmit(event) {
-        console.log("and the state is", this.state);
+        const author = firebase.auth().currentUser;
         const piece = {
             name: this.state.name,
             link: this.state.link,
             why: this.state.why,
             category: this.state.category,
+            author_uid: author.uid,
+            author_email: author.email,
         };
-        console.log("here is piece going to craete piece: ", piece)
         this.createPiece(piece);
         event.preventDefault();
     }
 
-    // Example POST method implementation:
-    async postData(url = '', data = {}) {
-        // Default options are marked with *
-        console.log("in post data, here is the data: ", data);
-        const response = await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify(data) // body data type must match "Content-Type" header
-        });
-        return response.json(); // parses JSON response into native JavaScript objects
-    }
-
-    createPiece(piece) {
-        this.postData('http://localhost:9000/api/create', piece)
-            .then(data => {
-                console.log(data); // JSON data parsed by `data.json()` call
-            });
+    async createPiece(piece) {
+        const docRef = firebase.firestore().collection('pieces').add(piece);
+        docRef.then(console.log("successfully created piece"));
     }
 
     componentDidMount() {
@@ -75,6 +57,7 @@ class CreatePage extends Component {
         return (
             <App className="App">
                 <FancyBackground colors={this.state.colors} className="App-content">
+                    <Header/>
                     <PieceForm onSubmit={(event) => this.handleSubmit(event)}>
                         <label>
                             Name:

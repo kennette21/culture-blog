@@ -3,6 +3,7 @@ import getBackgroundColors from '../gradients'
 import styled from 'styled-components';
 import FancyBackground from '../styles';
 import Header from './common/Header';
+import firebase from '../firebase';
 
 const App = styled.div`
     text-align: center;
@@ -20,15 +21,26 @@ class RandomPage extends Component {
      };
   }
 
-  getRandomPiece() {
-    fetch("http://localhost:9000/api/random")
-        .then(res => res.json())
-        .then(res => this.setState({
-            title: res.piece.title,
-            content: res.piece.content,
-            link: res.piece.link,
-            why: res.piece.why,
-          }));
+  async getRandomPiece() {
+    // getting random documents in firestore actually seems not trivial.
+    // https://stackoverflow.com/questions/46798981/firestore-how-to-get-random-documents-in-a-collection
+    //
+    // might have to incorperate the "feed" event store sooner than I thought.
+    
+    const notRandomRef = firebase.firestore().collection('pieces').doc('1')
+    const notRandomDoc = await notRandomRef.get();
+    if (!notRandomDoc.exists) {
+      console.log('No such document!');
+    } else {
+      console.log('Document data:', notRandomDoc.data());
+    }
+
+    this.setState({
+      title: notRandomDoc.data().name, // todo: desparately need to cleanup frontend components to match what is in firebase
+      content: notRandomDoc.data().content,
+      link: notRandomDoc.data().link,
+      why: notRandomDoc.data().why,
+    })
   }
 
   componentWillMount() {
