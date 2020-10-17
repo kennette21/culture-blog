@@ -18,7 +18,7 @@ class CreatePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
+            title: '',
             link: '',
             why: '',
             category: '',
@@ -32,20 +32,21 @@ class CreatePage extends Component {
 
     handleSubmit(event) {
         const author = firebase.auth().currentUser;
-        const piece = {
-            name: this.state.name,
+        const publish_event = {
+            event_type: "publish",
+            title: this.state.title,
             link: this.state.link,
             why: this.state.why,
             category: this.state.category,
             author_uid: author.uid,
             author_email: author.email,
         };
-        this.createPiece(piece);
+        this.publishPiece(publish_event);
         event.preventDefault();
     }
 
-    async createPiece(piece) {
-        const docRef = firebase.firestore().collection('pieces').add(piece);
+    async publishPiece(publish_event) {
+        const docRef = firebase.firestore().collection('events').add(publish_event);
         docRef.then(console.log("successfully created piece"));
     }
 
@@ -60,8 +61,8 @@ class CreatePage extends Component {
                     <Header/>
                     <PieceForm onSubmit={(event) => this.handleSubmit(event)}>
                         <label>
-                            Name:
-                        <input type="text" value={this.state.name} onChange={event => this.handleChange({name: event.target.value})} />
+                            Title:
+                        <input type="text" value={this.state.title} onChange={event => this.handleChange({title: event.target.value})} />
                         </label>
                         <label>
                             Link:
