@@ -6,40 +6,87 @@ import Header from './common/Header';
 import firebase from '../firebase';
 
 const App = styled.div`
-		text-align: center;
+	text-align: center;
+`;
+
+const Overlay = styled.div`
+	position: relative;
+	width: 90%;
+	height: 90%;
+	display: flex;
+	background-color: rgba(98%, 94.1%, 90.2%, 80%);
+	flex-direction: column;
+	border-radius: 16px;
+	/* align-items: right; */
+	/* justify-content: center; */
+	font-size: calc(10px + 2vmin);
+	color: rgba(0%, 0%, 0%, 100%);
+`;
+
+const LeftTextDiv = styled.div`
+	font-size: 16px;
+	text-align: left;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+`;
+
+const PieceTitle = styled.a`
+	text-align: left;
+	font-size: 24px;
+	text-decoration: none;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+	margin: 10px 0;
+`;
+
+const ReloadBtn = styled.div`
+	width: 32px;
+	height: 32px;
+	background-image: url("../assets/reload.svg");
+	border-radius: 6px;
+	box-shadow: 1px 3px;
+	background-color: rgba(41.2%, 41.2%, 41.2%, 100%);
+`;
+
+const PieceInfo = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-left: 20px;
+	margin-bottom: 30px;
+`;
+
+const Img = styled.img``;
+
+const ActionsContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
 `;
 
 class RandomPage extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { 
+		this.state = {
 			link: "",
 			title: "",
 			why: "",
 			colors: getBackgroundColors(),
-			noEvents: false,
-		 };
+			noNewEvents: false,
+		};
 	}
 
 	async getRandomPiece() {
-		// getting random documents in firestore actually seems not trivial.
-		// https://stackoverflow.com/questions/46798981/firestore-how-to-get-random-documents-in-a-collection
-		//
-		// might have to incorperate the "feed" event store sooner than I thought.
-
 		const eventsRef = firebase.firestore().collection('events');
 		const publishEventsQuery = await eventsRef
 			.where('event_type', '==', 'publish')
 			.get();
 		if (publishEventsQuery.empty) {
 			console.log('No publish events.');
-			// return;
 		}
 		const publishEvents = [];
-		publishEventsQuery.forEach(function(ev) {
-			publishEvents.push({"id": ev.id, ...ev.data()});
+		publishEventsQuery.forEach(function (ev) {
+			publishEvents.push({ "id": ev.id, ...ev.data() });
 		});
-		console.log("publishEvents: ", publishEvents);
 
 		const curUserUid = firebase.auth().currentUser.uid;
 		const userViewEventsQuery = await eventsRef
@@ -48,18 +95,19 @@ class RandomPage extends Component {
 			.get();
 
 		const userViewEvents = [];
-		userViewEventsQuery.forEach(function(ev) {
-			userViewEvents.push({"id": ev.id, ...ev.data()});
+		userViewEventsQuery.forEach(function (ev) {
+			userViewEvents.push({ "id": ev.id, ...ev.data() });
 		});
-		
-		console.log("userViewEvents ", userViewEvents);
 
 		const unseenPublishEvents = publishEvents.filter(ev => !userViewEvents.map(view => view.piece_id).includes(ev.id));
-		console.log("unseenPublishEvents: ", unseenPublishEvents);
 
 		if (unseenPublishEvents.length === 0) {
+			const randomEvent = publishEvents[Math.floor(Math.random() * publishEvents.length)]
 			this.setState({
-				noEvents: true
+				noNewEvents: true,
+				link: randomEvent.link,
+				title: randomEvent.title,
+				why: randomEvent.why,
 			}) // todo: improve display of no events
 		} else {
 			this.setState({
@@ -83,24 +131,26 @@ class RandomPage extends Component {
 	}
 
 	componentWillMount() {
-			this.getRandomPiece();
+		this.getRandomPiece();
 	}
 
 	render() {
-		const {title, link, why, noEvents, colors} = this.state
+		const { title, link, why, noNewEvents, colors } = this.state
 		return (
 			<App className="App">
 				<FancyBackground colors={colors} className="App-content">
-					<Header/>
-					<div>
-						<div onClick={() => this.getRandomPiece()}>RELOAD</div>
-						<h3>{title}</h3>
-						<a href={link}> Visit this Content </a>
-						<h5>Why This is Worth?</h5>
-						<p>{why}</p>
-						<a>{noEvents && "you have no events"}</a>
-					</div>
-					<p className="App-intro">{this.state.apiResponse}</p>
+					<Overlay className="Overlay">
+						<Header />
+						<PieceInfo>
+							<PieceTitle href={link}>{title}</PieceTitle>
+							<LeftTextDiv>{why}</LeftTextDiv>
+						</PieceInfo>
+						<ActionsContainer>
+							<ReloadBtn onClick={() => this.getRandomPiece()}>
+								<Img src='../assets/reload.png'></Img>
+							</ReloadBtn>
+						</ActionsContainer>
+					</Overlay>
 				</FancyBackground>
 			</App>
 		);

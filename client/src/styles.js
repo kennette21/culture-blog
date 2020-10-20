@@ -9,7 +9,9 @@ export const FancyBackground = styled.div`
   background: ${props => props.colors.first || "#bdc3c7"};
   background: -webkit-linear-gradient(to right, ${props => props.colors.first}, ${props => props.colors.second});
   background: linear-gradient(to right, ${props => props.colors.first}, ${props => props.colors.second});
-  min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;

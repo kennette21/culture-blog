@@ -4,8 +4,10 @@ import firebase from '../../firebase';
 
 const HeaderComp = styled.div`
     position: fixed;
+    color: white;
     top: 0;
     right: 0;
+    font-size: 18px;
     margin-top: 10px;
     margin-right: 10px;
 `;
