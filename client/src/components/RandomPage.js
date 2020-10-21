@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import FancyBackground from '../styles';
 import Header from './common/Header';
 import firebase from '../firebase';
+import svg from '../assets/reload.svg';
+import { ReactSVG } from 'react-svg';
+import Footer from './common/Footer';
 
 const App = styled.div`
 	text-align: center;
@@ -17,6 +20,8 @@ const Overlay = styled.div`
 	background-color: rgba(98%, 94.1%, 90.2%, 80%);
 	flex-direction: column;
 	border-radius: 16px;
+	margin-top: 60px;
+	margin-bottom: 60px;
 	/* align-items: right; */
 	/* justify-content: center; */
 	font-size: calc(10px + 2vmin);
@@ -38,20 +43,39 @@ const PieceTitle = styled.a`
 `;
 
 const ReloadBtn = styled.div`
-	width: 32px;
-	height: 32px;
+	width: 100px;
+	height: 100px;
+	padding: 20px;
 	background-image: url("../assets/reload.svg");
 	border-radius: 6px;
-	box-shadow: 1px 3px;
-	background-color: rgba(41.2%, 41.2%, 41.2%, 100%);
+	box-shadow: 3px 3px rgba(51.5%, 51.4%, 51.4%, 100%);
+	background-color: ${props => props.colors.first};
+	cursor: pointer;
+
+	&:hover {
+		background-color: ${props => props.colors.second};
+		box-shadow: 1px 1px rgba(9.3%, 9.3%, 9.3%, 100%);
+		transition: .2s;
+	}
 `;
 
-const PieceInfo = styled.div`
+const Centerbox = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+`;
+
+const PieceInfo= styled.div`
+	/* width: 100%;
+    position: absolute;
+    top: 160px; */
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	margin-left: 20px;
-	margin-bottom: 30px;
+	justify-content: center;
+	/* margin-left: 20px;
+	margin-bottom: 30px; */
+	min-height: 300px;
+    max-width: 800px;
 `;
 
 const Img = styled.img``;
@@ -137,20 +161,24 @@ class RandomPage extends Component {
 	render() {
 		const { title, link, why, noNewEvents, colors } = this.state
 		return (
+
 			<App className="App">
 				<FancyBackground colors={colors} className="App-content">
+					<Header />
 					<Overlay className="Overlay">
-						<Header />
-						<PieceInfo>
-							<PieceTitle href={link}>{title}</PieceTitle>
-							<LeftTextDiv>{why}</LeftTextDiv>
-						</PieceInfo>
-						<ActionsContainer>
-							<ReloadBtn onClick={() => this.getRandomPiece()}>
-								<Img src='../assets/reload.png'></Img>
+						<Centerbox>
+							<PieceInfo className="PieceInfo">
+								<PieceTitle href={link}>{title}</PieceTitle>
+								<LeftTextDiv>{why}</LeftTextDiv>
+							</PieceInfo>
+						</Centerbox>
+						<ActionsContainer className="ActionsContainer">
+							<ReloadBtn colors={colors} onClick={() => this.getRandomPiece()}>
+								<ReactSVG src={svg} />
 							</ReloadBtn>
 						</ActionsContainer>
 					</Overlay>
+					<Footer colors={colors}/>
 				</FancyBackground>
 			</App>
 		);

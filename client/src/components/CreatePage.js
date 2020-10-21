@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import getBackgroundColors from '../gradients';
-import FancyBackground from '../styles';
+import {FancyBackground, FancyInput, FancyButton} from '../styles';
 import firebase from '../firebase';
 import Header from './common/Header';
+import Footer from './common/Footer';
 
 const App = styled.div`
     text-align: center;
@@ -12,6 +13,10 @@ const App = styled.div`
 const PieceForm = styled.form`
     display: flex;
     flex-direction: column;
+`;
+
+const FancySelect = styled(FancyInput.withComponent("select"))`
+    color: pink;
 `;
 
 class CreatePage extends Component {
@@ -47,7 +52,14 @@ class CreatePage extends Component {
 
     async publishPiece(publish_event) {
         const docRef = firebase.firestore().collection('events').add(publish_event);
-        docRef.then(console.log("successfully created piece"));
+        docRef.then(() => {
+            this.setState({
+                title: '',
+                link: '',
+                why: '',
+                category: '',
+            })
+        });
     }
 
     componentDidMount() {
@@ -55,32 +67,25 @@ class CreatePage extends Component {
     }
 
     render() {
+        const {colors} = this.state
         return (
             <App className="App">
-                <FancyBackground colors={this.state.colors} className="App-content">
+                <FancyBackground colors={colors} className="App-content">
                     <Header/>
                     <PieceForm onSubmit={(event) => this.handleSubmit(event)}>
-                        <label>
-                            Title:
-                        <input type="text" value={this.state.title} onChange={event => this.handleChange({title: event.target.value})} />
-                        </label>
-                        <label>
-                            Link:
-                        <input type="text" value={this.state.link} onChange={event => this.handleChange({link: event.target.value})} />
-                        </label>
-                        <label>
-                            Why:
-                        <input type="text" value={this.state.why} onChange={event => this.handleChange({why: event.target.value})} />
-                        </label>
-                        <select value={this.state.value} onChange={event => this.handleChange({category: event.target.value})}>
+                        <FancyInput colors={colors} type="text" placeholder="Title" value={this.state.title} onChange={event => this.handleChange({title: event.target.value})} />
+                        <FancyInput colors={colors} placeholder="Link" type="text" value={this.state.link} onChange={event => this.handleChange({link: event.target.value})} />
+                        <FancyInput colors={colors} placeholder="Why" type="text" value={this.state.why} onChange={event => this.handleChange({why: event.target.value})} />
+                        <FancySelect colors={colors} value={this.state.value} onChange={event => this.handleChange({category: event.target.value})}>
                             <option value="listen">Listen</option>
                             <option value="watch">Watch</option>
                             <option value="read">Read</option>
                             <option value="look">Look</option>
                             <option value="do">Do</option>
-                        </select>
-                        <input type="submit" value="Submit" />
+                        </FancySelect>
+                        <FancyButton colors={colors} type="submit" value="Create" />
                     </PieceForm>
+                    <Footer colors={colors}/>
                 </FancyBackground>
             </App>
         );

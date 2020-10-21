@@ -1,11 +1,29 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import FancyBackground from '../styles';
+import {FancyBackground, FancyInput, FancyButton} from '../styles';
 import firebase from '../firebase';
 import getBackgroundColors from '../gradients';
+import Footer from './common/Footer';
 
 const App = styled.div`
     text-align: center;
+`;
+
+const VFancyButton = styled.button`
+  padding: 1rem 1.4rem;
+  background: transparent;
+  font-size: 32px;
+  transition: all 0.3s;
+  margin: 10px 0;
+  border: 0.3rem solid ${props => props.colors.first};
+  border-radius: 9px;
+  outline-width: 0;
+  color: gray;
+  width: 100%;
+
+  &:hover{
+    background-color: rgba(41.2%, 41.2%, 41.2%, 30%)
+  }
 `;
 
 class LoginPage extends Component {
@@ -21,11 +39,6 @@ class LoginPage extends Component {
 
 
   onChange = (e) => {
-    /*
-      Because we named the inputs to match their
-      corresponding values in state, it's
-      super easy to update the state
-    */
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -61,7 +74,7 @@ class LoginPage extends Component {
 
   renderWantToSignup = () => {
     if (this.state.wantToSignup) {
-      return <button onClick={this.signup}>Want to Signup Instead?</button> //TODO: style this button!
+      return <VFancyButton colors={this.state.colors} onClick={this.signup}>Want to Signup?</VFancyButton> //TODO: style this button!
     }
   }
 
@@ -72,28 +85,29 @@ class LoginPage extends Component {
         <FancyBackground colors={colors} className="App-content">
           <form onSubmit={this.login}>
             <div>
-              <label>Username:</label>
-              <input
+              <FancyInput colors={colors}
                 type="text"
                 name="username"
                 value={username}
+                placeholder="username"
                 onChange={this.onChange}
               />
             </div>
             <div>
-              <label>Password:</label>
-              <input
+              <FancyInput colors={colors}
                 type="password"
                 name="password"
+                placeholder="password"
                 value={password}
                 onChange={this.onChange}
               />
             </div>
             <div>
-              <input type="submit" value="Log In" />
+              <FancyButton colors={colors} type="submit" value="Enter" />
             </div>
+            {this.renderWantToSignup()}
           </form>
-          {this.renderWantToSignup()}
+          <Footer colors={colors}/>
         </FancyBackground>
       </App>
     );
