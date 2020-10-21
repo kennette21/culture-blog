@@ -21,7 +21,7 @@ class Header extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getCurrentUser();
     }
 
@@ -43,14 +43,13 @@ class Header extends Component {
     getHeaderDisplay() {
         const { user } = this.state;
         if (user) {
-            return "Hey the username is:, ", user.email; //TODO: should link to profile page where user can set some data
+            return user.email //TODO: should link to profile page where user can set some data
         } else {
             return <a href="/login">click here to sign in</a>
         }
     }
 
     render() {
-        const { user } = this.state;
         return (
             <HeaderComp>
                 {this.getHeaderDisplay()}

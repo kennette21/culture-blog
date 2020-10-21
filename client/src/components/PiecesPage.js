@@ -36,7 +36,7 @@ class PiecesPage extends Component {
         return this.state.pieces.map(piece => (<Item key={piece.why}>{piece.why}</Item>))
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getPieces();
     }
 

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { FancyBackground, App } from '../styles';
 import firebase from '../firebase';
 import getBackgroundColors from '../gradients';
@@ -35,15 +34,17 @@ class SignoutPage extends Component {
                 return "Bye bye! Successfully signed out";
             case "failed":
                 return "Somethign went wrong, could not sign you out :(";
+            default:
+                return "Somethign went wrong :(";
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.signout();
     }
 
     render() {
-        const { username, password, colors } = this.state;
+        const { colors } = this.state;
         return (
             <App className="App">
                 <FancyBackground colors={colors} className="App-content">

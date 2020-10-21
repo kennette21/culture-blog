@@ -66,19 +66,12 @@ const Centerbox = styled.div`
 `;
 
 const PieceInfo= styled.div`
-	/* width: 100%;
-    position: absolute;
-    top: 160px; */
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	/* margin-left: 20px;
-	margin-bottom: 30px; */
 	min-height: 300px;
     max-width: 800px;
 `;
-
-const Img = styled.img``;
 
 const ActionsContainer = styled.div`
 	display: flex;
@@ -154,12 +147,12 @@ class RandomPage extends Component {
 		docRef.then(console.log("successfully created view"));
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.getRandomPiece();
 	}
 
 	render() {
-		const { title, link, why, noNewEvents, colors } = this.state
+		const { title, link, why, colors } = this.state
 		return (
 
 			<App className="App">
