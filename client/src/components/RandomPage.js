@@ -105,18 +105,21 @@ class RandomPage extends Component {
 			publishEvents.push({ "id": ev.id, ...ev.data() });
 		});
 
-		const curUserUid = firebase.auth().currentUser.uid;
-		const userViewEventsQuery = await eventsRef
-			.where('event_type', '==', 'view')
-			.where('user_uid', '==', curUserUid)
-			.get();
-
+		const curUserUid = firebase.auth().currentUser ? firebase.auth().currentUser.uid : null;
 		const userViewEvents = [];
-		userViewEventsQuery.forEach(function (ev) {
-			userViewEvents.push({ "id": ev.id, ...ev.data() });
-		});
 
-		const unseenPublishEvents = publishEvents.filter(ev => !userViewEvents.map(view => view.piece_id).includes(ev.id));
+		if (curUserUid) {
+			const userViewEventsQuery = await eventsRef
+				.where('event_type', '==', 'view')
+				.where('user_uid', '==', curUserUid)
+				.get();
+
+			userViewEventsQuery.forEach(function (ev) {
+				userViewEvents.push({ "id": ev.id, ...ev.data() });
+			});
+		}
+
+		const unseenPublishEvents = curUserUid ? publishEvents.filter(ev => !userViewEvents.map(view => view.piece_id).includes(ev.id)) : [];
 
 		if (unseenPublishEvents.length === 0) {
 			const randomEvent = publishEvents[Math.floor(Math.random() * publishEvents.length)]
@@ -126,6 +129,8 @@ class RandomPage extends Component {
 				title: randomEvent.title,
 				why: randomEvent.why,
 			}) // todo: improve display of no events
+
+
 		} else {
 			this.setState({
 				title: unseenPublishEvents[0].title, // todo: desparately need to cleanup frontend components to match what is in firebase
