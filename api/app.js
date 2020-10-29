@@ -6,6 +6,19 @@ var logger = require('morgan');
 var cors = require("cors");
 const bodyParser = require('body-parser');
 var session = require('express-session');
+const Knex = require('knex');
+const knexConfig = require('./knexfile');
+
+const { Model } = require('objection');
+const { User } = require('./models/User');
+
+// Initialize knex.
+const knex = Knex(knexConfig.development);
+
+// Bind all Models to the knex instance. You only
+// need to do this once before you use any of
+// your model classes.
+Model.knex(knex);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -14,8 +27,8 @@ var random = require('./routes/random');
 var all = require('./routes/all');
 var create = require('./routes/createPiece');
 
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport')
+, LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
 
@@ -77,9 +90,11 @@ app.use('/api/random', random);
 app.use('/api/all', all);
 app.use('/api/create', create);
 app.post('/api/login',
-  passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/login',
-                                   failureFlash: false })
+  passport.authenticate('local', { 
+    successRedirect: '/random',
+    failureRedirect: '/failedHard',
+    failureFlash: false 
+  })
 );
 
 // catch 404 and forward to error handler
@@ -101,5 +116,29 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+async function createUserSchema() {
+  if (await knex.schema.hasTable('users')) {
+    return;
+  }
+
+  // Create database schema. You should use knex migration files
+  // to do this. We create it here for simplicity.
+  await knex.schema.createTable('users', table => {
+    table.increments('id').primary();
+    table.string('username');
+    table.string('password');
+  });
+}
+
+async function dbTest() {
+  const sylvesters = await User.query()
+  .where('*')
+  .orderBy('id');
+
+  console.log('sylvesters:', sylvesters);
+}
+
+dbTest()
 
 module.exports = app;
