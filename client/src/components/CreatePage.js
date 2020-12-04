@@ -15,7 +15,7 @@ const PieceForm = styled.form`
     flex-direction: column;
 `;
 
-const FancySelect = styled(FancyInput.withComponent("select"))`
+export const FancySelect = styled(FancyInput.withComponent("select"))`
     color: pink;
 `;
 
