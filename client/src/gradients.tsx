@@ -1,5 +1,15 @@
 
-const gradients = [
+export type GradientObj = {
+    name: string,
+    colors: string[]
+}
+
+export type GradientColors = {
+    first: string,
+    second: string
+}
+
+const gradients: GradientObj[] = [
     {
         "name": "Omolon",
         "colors": ["#091E3A", "#2F80ED", "#2D9EE0"]
@@ -1536,7 +1546,7 @@ const gradients = [
     }
 ]
 
-export const getBackgroundColors = () => {
+export const getBackgroundColors = (): GradientColors => {
     const gradientColors = gradients[Math.floor(Math.random() * gradients.length)].colors
     return {
       first: gradientColors[0],

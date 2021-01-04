@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import {FancyBackground, FancyInput, FancyButton} from '../styles';
-import firebase from '../firebase';
-import getBackgroundColors from '../gradients';
+import firebase from 'firebase';
+import {getBackgroundColors, GradientColors} from '../gradients';
 import Footer from './common/Footer';
 
 const App = styled.div`
@@ -38,11 +38,11 @@ class LoginPage extends Component {
   }
 
 
-  onChange = (e) => {
+  onChange = (e: MouseEvent) => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  login = (e) => {
+  login = (e: MouseEvent) => {
     e.preventDefault();
     // get our form data out of state
     const { username, password } = this.state;
