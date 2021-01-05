@@ -1,11 +1,16 @@
 import styled from 'styled-components';
+import { GradientColors } from './gradients';
 
 export const App = styled.div`
     text-align: center;
 `;
 
+export interface FancyProps {
+  colors: GradientColors
+}
 
-export const FancyBackground = styled.div`
+
+export const FancyBackground = styled.div<FancyProps>`
   background: ${props => props.colors.first || "#bdc3c7"};
   background: -webkit-linear-gradient(to right, ${props => props.colors.first}, ${props => props.colors.second});
   background: linear-gradient(to right, ${props => props.colors.first}, ${props => props.colors.second});
@@ -20,7 +25,7 @@ export const FancyBackground = styled.div`
   color: white;
 `;
 
-export const FancyInput = styled.input`
+export const FancyInput = styled.input<FancyProps>`
   padding: 1rem 1.4rem;
   background: transparent;
   font-size: 32px;
@@ -36,7 +41,7 @@ export const FancyInput = styled.input`
   }
 `;
 
-export const FancyButton = styled(FancyInput)`
+export const FancyButton = styled(FancyInput)<FancyProps>`
   margin: 10px 0;
   border: 0.3rem solid ${props => props.colors.first};
   border-radius: 9px;
