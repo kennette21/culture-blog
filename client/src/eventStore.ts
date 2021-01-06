@@ -33,7 +33,7 @@ export interface PublishedEvent extends PublishEvent {
 export interface ViewEvent extends Event {
 	event_type: "view";
 	piece_id: string;
-	viewer_user_uid: string;
+	user_uid: string;
 }
 
 // commands ---------
@@ -43,7 +43,12 @@ export const logPublish = async (publishEvent: PublishEvent) => {
 		.firestore()
 		.collection("events")
 		.add(publishEvent)
-		.then(() => console.log("successfully created event"))
+		.then(() =>
+			console.log(
+				"successfully logged publish event " +
+					JSON.stringify(publishEvent)
+			)
+		)
 		.catch(() => console.log("failed to log publish"));
 };
 
@@ -51,13 +56,15 @@ export const logView = async (pieceId: string, viewerUserUid: string) => {
 	const viewEvent: ViewEvent = {
 		event_type: "view",
 		piece_id: pieceId,
-		viewer_user_uid: viewerUserUid,
+		user_uid: viewerUserUid,
 	};
 	firebase
 		.firestore()
 		.collection("events")
 		.add(viewEvent)
-		.then(() => console.log("successfully created view for " + pieceId))
+		.then(() =>
+			console.log("successfully logged view " + JSON.stringify(viewEvent))
+		)
 		.catch(() => console.log("failed to log view"));
 };
 
