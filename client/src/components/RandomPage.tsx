@@ -129,19 +129,6 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 		};
 	}
 
-	logViewEvent = (pieceId: any, userUid: any) => {
-		const viewEvent = {
-			event_type: "view",
-			piece_id: pieceId,
-			user_uid: userUid,
-		};
-		firebase
-			.firestore()
-			.collection("events")
-			.add(viewEvent)
-			.then(() => console.log("successfully created view"));
-	};
-
 	componentDidMount = () => {
 		this.getDisplayPiece();
 	};
@@ -170,7 +157,7 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 	};
 
 	render() {
-		const { piece, colors } = this.state;
+		const { colors } = this.state;
 		return (
 			<App className="App">
 				<FancyBackground colors={colors} className="App-content">

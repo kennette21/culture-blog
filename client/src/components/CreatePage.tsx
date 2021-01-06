@@ -6,7 +6,7 @@ import { FancyBackground, FancyInput, FancyButton } from "../styles";
 import firebase from "../firebase";
 import Header from "./common/Header";
 import Footer from "./common/Footer";
-import { PieceCategory, PublishEvent } from "../eventStore";
+import { logPublish, PieceCategory, PublishEvent } from "../eventStore";
 
 const App = styled.div`
 	text-align: center;
@@ -60,24 +60,24 @@ class CreatePage extends Component<RouteComponentProps, CreatePageState> {
 				category: this.state.category as PieceCategory,
 				author_uid: author.uid,
 			};
-			this.publishPiece(publishEvent);
+			logPublish(publishEvent);
 			event.preventDefault();
 		} else {
 			console.log("cannot create event, could not find firebase user");
 		}
 	}
 
-	async publishPiece(publish_event: any) {
-		const docRef = firebase
-			.firestore()
-			.collection("events")
-			.add(publish_event);
-		docRef.then(() => {
-			this.setState({
-				...IntialSubState,
-			});
-		});
-	}
+	// async publishPiece(publish_event: any) {
+	// 	const docRef = firebase
+	// 		.firestore()
+	// 		.collection("events")
+	// 		.add(publish_event);
+	// 	docRef.then(() => {
+	// 		this.setState({
+	// 			...IntialSubState,
+	// 		});
+	// 	});
+	// }
 
 	componentDidMount() {
 		this.setState({ colors: getBackgroundColors() });

@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import firebase from "firebase";
+import { RouteComponentProps } from "@reach/router";
 
 // css goes here
 const List = styled.div``;
 
 const Item = styled.div``;
 
-class PiecesPage extends Component {
+class PiecesPage extends Component<RouteComponentProps> {
 	// api call to get all pieces from the api goes here
 	// constructor(props) {
 	//     super(props);
