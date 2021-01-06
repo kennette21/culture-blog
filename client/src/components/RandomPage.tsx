@@ -1,10 +1,10 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component } from "react";
+// import React, { Component, useState, useEffect } from "react";
 import { RouteComponentProps } from "@reach/router";
 import { getBackgroundColors, GradientColors } from "../gradients";
 import styled from "styled-components";
 import FancyBackground, { FancyProps } from "../styles";
 import Header from "./common/Header";
-import firebase from "../firebase";
 import svg from "../assets/reload.svg";
 import { ReactSVG } from "react-svg";
 import Footer from "./common/Footer";

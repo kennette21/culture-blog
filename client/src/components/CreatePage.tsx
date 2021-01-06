@@ -53,7 +53,7 @@ class CreatePage extends Component<RouteComponentProps, CreatePageState> {
 		const author = firebase.auth().currentUser;
 		if (author) {
 			const publishEvent: PublishEvent = {
-				event_name: "publish",
+				event_type: "publish",
 				title: this.state.title,
 				link: this.state.link,
 				why: this.state.why,

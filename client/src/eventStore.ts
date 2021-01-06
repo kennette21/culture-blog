@@ -6,7 +6,7 @@ export interface PieceWithMeta {
 }
 
 export interface Event {
-	event_name: "view" | "publish";
+	event_type: "view" | "publish";
 }
 
 export enum PieceCategory {
@@ -18,7 +18,7 @@ export enum PieceCategory {
 }
 
 export interface PublishEvent extends Event {
-	event_name: "publish";
+	event_type: "publish";
 	link: string;
 	title: string;
 	why: string;
@@ -31,7 +31,7 @@ export interface PublishedEvent extends PublishEvent {
 }
 
 export interface ViewEvent extends Event {
-	event_name: "view";
+	event_type: "view";
 	piece_id: string;
 	viewer_user_uid: string;
 }
@@ -44,12 +44,12 @@ export const logPublish = async (publishEvent: PublishEvent) => {
 		.collection("events")
 		.add(publishEvent)
 		.then(() => console.log("successfully created event"))
-		.catch(() => console.log("failed to log publish :("));
+		.catch(() => console.log("failed to log publish"));
 };
 
 export const logView = async (pieceId: string, viewerUserUid: string) => {
 	const viewEvent: ViewEvent = {
-		event_name: "view",
+		event_type: "view",
 		piece_id: pieceId,
 		viewer_user_uid: viewerUserUid,
 	};
@@ -57,7 +57,7 @@ export const logView = async (pieceId: string, viewerUserUid: string) => {
 		.firestore()
 		.collection("events")
 		.add(viewEvent)
-		.then(() => console.log("successfully created view"))
+		.then(() => console.log("successfully created view for " + pieceId))
 		.catch(() => console.log("failed to log view"));
 };
 
@@ -65,15 +65,15 @@ export const logView = async (pieceId: string, viewerUserUid: string) => {
 
 export const getRelevantPiece = async (): Promise<PieceWithMeta> => {
 	const eventsRef = firebase.firestore().collection("events");
-	const publishEventsQuery = await eventsRef
+	const publishedEventsQuery = await eventsRef
 		.where("event_type", "==", "publish")
 		.get();
-	if (publishEventsQuery.empty) {
+	if (publishedEventsQuery.empty) {
 		console.log("No publish events.");
 	}
-	const publishEvents: PublishedEvent[] = [];
-	publishEventsQuery.forEach(function (ev) {
-		publishEvents.push(({
+	const publishedEvents: PublishedEvent[] = [];
+	publishedEventsQuery.forEach(function (ev) {
+		publishedEvents.push(({
 			id: ev.id,
 			...ev.data(),
 		} as unknown) as PublishedEvent);
@@ -96,7 +96,7 @@ export const getRelevantPiece = async (): Promise<PieceWithMeta> => {
 	}
 
 	const unseenPublishEvents = curUserUid
-		? publishEvents.filter(
+		? publishedEvents.filter(
 				(ev) =>
 					!userViewEvents.map((view) => view.piece_id).includes(ev.id)
 		  )
@@ -106,10 +106,14 @@ export const getRelevantPiece = async (): Promise<PieceWithMeta> => {
 	let noNewEvents: boolean;
 	if (unseenPublishEvents.length === 0) {
 		// random event
-		event = publishEvents[Math.floor(Math.random() * publishEvents.length)];
+		console.log("no new events, so seeing something stale");
+		event =
+			publishedEvents[Math.floor(Math.random() * publishedEvents.length)];
 		noNewEvents = true;
 	} else {
 		// random unseen event
+		console.log("seeing a new event");
+		console.log(unseenPublishEvents);
 		event = unseenPublishEvents[0];
 		if (curUserUid) {
 			logView(event.id, curUserUid);
@@ -123,7 +127,7 @@ export const getRelevantPiece = async (): Promise<PieceWithMeta> => {
 			why: event.why,
 			id: event.id,
 			category: event.category,
-			event_name: "publish",
+			event_type: "publish",
 			author_uid: event.author_uid,
 		},
 		noNewEvents: noNewEvents,
