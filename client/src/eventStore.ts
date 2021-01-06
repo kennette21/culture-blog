@@ -100,39 +100,30 @@ export const getRelevantPiece = async (): Promise<PieceWithMeta> => {
           )
         : [];
 
+    let event: PublishedEvent;
+    let noNewEvents: boolean;
     if (unseenPublishEvents.length === 0) {
         // random event
-        const event =
-            publishEvents[Math.floor(Math.random() * publishEvents.length)];
-        return {
-            piece: {
-                title: randomEvent.title, // todo: desparately need to cleanup frontend components to match what is in firebase
-                link: randomEvent.link,
-                why: randomEvent.why,
-                id: randomEvent.id,
-                category: randomEvent.category,
-                event_name: "publish",
-                author_uid: randomEvent.author_uid,
-            },
-            noNewEvents: true,
-        };
+		event = publishEvents[Math.floor(Math.random() * publishEvents.length)];
+		noNewEvents = true;
     } else {
         // random unseen event
-        const event = unseenPublishEvents[0];
+        event = unseenPublishEvents[0];
         if (curUserUid) {
             logViewEvent(event.id, curUserUid);
-        }
-        return {
-            piece: {
-                title: event.title, // todo: desparately need to cleanup frontend components to match what is in firebase
-                link: event.link,
-                why: event.why,
-                id: event.id,
-                category: eventsRef.category,
-                event_name: "publish",
-                author_uid: event.author_uid,
-            },
-            noNewEvents: false,
-        };
+		}
+		noNewEvents = false;
     }
+    return {
+        piece: {
+            title: event.title, // todo: desparately need to cleanup frontend components to match what is in firebase
+            link: event.link,
+            why: event.why,
+            id: event.id,
+            category: event.category,
+            event_name: "publish",
+            author_uid: event.author_uid,
+        },
+        noNewEvents: noNewEvents,
+    };
 };
