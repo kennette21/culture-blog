@@ -1,29 +1,39 @@
-import React, { Component } from 'react';
-import { FancyBackground, App } from '../styles';
-import firebase from '../firebase';
-import getBackgroundColors from '../gradients';
+import React, { Component } from "react";
+import { FancyBackground, App } from "../styles";
+import firebase from "../firebase";
+import getBackgroundColors, { GradientColors } from "../gradients";
+import { RouteComponentProps } from "@reach/router";
 
-class SignoutPage extends Component {
-    constructor(props) {
+interface SignoutPageState {
+    colors: GradientColors;
+    status: string;
+}
+
+class SignoutPage extends Component<RouteComponentProps, SignoutPageState> {
+    constructor(props: RouteComponentProps) {
         super(props);
         this.state = {
             colors: getBackgroundColors(),
-            status: "pending"
+            status: "pending",
         };
     }
 
     signout() {
-        firebase.auth().signOut().then(() => {
-            console.log("woohoo signout successful!!")
-            this.setState({
-                status: "success"
+        firebase
+            .auth()
+            .signOut()
+            .then(() => {
+                console.log("woohoo signout successful!!");
+                this.setState({
+                    status: "success",
+                });
+            })
+            .catch((error) => {
+                console.log("ohhh no signout failed :( ", error);
+                this.setState({
+                    status: "failed",
+                });
             });
-        }).catch((error) => {
-            console.log("ohhh no signout failed :( ", error);
-            this.setState({
-                status: "failed"
-            });
-        })
     }
 
     signoutStatus() {
