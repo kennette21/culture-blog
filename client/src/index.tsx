@@ -9,12 +9,12 @@ import LoginPage from "./components/LoginPage";
 import SignoutPage from "./components/SignoutPage";
 
 ReactDOM.render(
-  <Router>
-    <RandomPage path="/random" />
-    <PiecesPage path="/all" />
-    <CreatePage path="/create" />
-    <LoginPage path="/login" />
-    <SignoutPage path="/logout" />
-  </Router>,
-  document.getElementById("root")
+	<Router>
+		<RandomPage default path="/random" />
+		<PiecesPage path="/all" />
+		<CreatePage path="/create" />
+		<LoginPage path="/login" />
+		<SignoutPage path="/logout" />
+	</Router>,
+	document.getElementById("root")
 );

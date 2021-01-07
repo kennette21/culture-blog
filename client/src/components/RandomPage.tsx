@@ -5,17 +5,25 @@ import { getBackgroundColors, GradientColors } from "../gradients";
 import styled from "styled-components";
 import FancyBackground, { FancyProps } from "../styles";
 import Header from "./common/Header";
-import svg from "../assets/reload.svg";
-import { ReactSVG } from "react-svg";
 import Footer from "./common/Footer";
 import { getRelevantPiece, PublishedEvent } from "../eventStore";
+import {
+	AiFillCloseCircle,
+	AiOutlineReload,
+	AiFillHeart,
+} from "react-icons/ai";
+
+declare global {
+	interface Window {
+		iframely: any;
+	}
+}
 
 const App = styled.div`
 	text-align: center;
 `;
 
-const Overlay = styled.div`
-	position: relative;
+const PieceContainer = styled.div`
 	width: 90%;
 	height: 90%;
 	display: flex;
@@ -47,11 +55,13 @@ const PieceTitle = styled.a`
 `;
 
 const ReloadBtn = styled.div<FancyProps>`
+	margin: 0px 60px;
 	width: 100px;
-	height: 100px;
-	padding: 20px;
-	background-image: url("../assets/reload.svg");
+	height: 100%;
 	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	box-shadow: 3px 3px rgba(51.5%, 51.4%, 51.4%, 100%);
 	background-color: ${(props) => props.colors.first};
 	cursor: pointer;
@@ -63,10 +73,21 @@ const ReloadBtn = styled.div<FancyProps>`
 	}
 `;
 
-const Centerbox = styled.div`
+const ReactionButton = styled.div`
+	width: 50px;
+	height: 100%;
+	border-radius: 3px;
 	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	background: none;
+`;
+
+const Piece = styled.div`
+	display: flex;
+	flex-direction: column;
+	padding: 0 20px;
 `;
 
 const PieceInfo = styled.div`
@@ -81,6 +102,7 @@ const ActionsContainer = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	height: 100px;
 	width: 100%;
 `;
 
@@ -114,7 +136,8 @@ const ActionsContainer = styled.div`
 // }
 
 interface RandomPageState {
-	piece: PublishedEvent | null;
+	piece: PublishedEvent | null; // TODO: return an array of pieces and store them in FE state
+	contentHtml: string | null;
 	noNewEvents: boolean;
 	colors: GradientColors;
 }
@@ -124,10 +147,25 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 		super(props);
 		this.state = {
 			piece: null,
+			contentHtml: null,
 			noNewEvents: false,
 			colors: getBackgroundColors(),
 		};
 	}
+
+	getIframelyPieceHtml = async (url: string) => {
+		const resp = await (
+			await fetch(
+				"http://iframe.ly/api/iframely?url=" +
+					url +
+					"&api_key=532610e8a5ae3742540e3a&iframe=1&omit_script=1"
+			)
+		).json(); // TODO: extract api key
+		// TODO: some error handling if iframely does not like url, just return some simple html ancor for link
+		this.setState({
+			contentHtml: resp.html,
+		});
+	};
 
 	componentDidMount = () => {
 		this.getDisplayPiece();
@@ -135,6 +173,7 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 
 	getDisplayPiece = async () => {
 		const relevantPiece = await getRelevantPiece();
+		this.getIframelyPieceHtml(relevantPiece.piece.link);
 		this.setState({
 			piece: relevantPiece.piece,
 			noNewEvents: relevantPiece.noNewEvents,
@@ -142,17 +181,22 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 	};
 
 	getPieceSection = () => {
-		const { piece } = this.state;
+		const { piece, contentHtml } = this.state;
 
 		if (piece) {
 			return (
 				<PieceInfo className="PieceInfo">
 					<PieceTitle href={piece.link}>{piece.title}</PieceTitle>
+					{contentHtml && (
+						<div
+							dangerouslySetInnerHTML={{ __html: contentHtml }}
+						/>
+					)}
 					<LeftTextDiv>{piece.why}</LeftTextDiv>
 				</PieceInfo>
 			);
 		} else {
-			return <div>Whoops null piece</div>;
+			return <div>Loading</div>; // TODO: better loading screen exp: spinner? thinking face?
 		}
 	};
 
@@ -162,17 +206,33 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 			<App className="App">
 				<FancyBackground colors={colors} className="App-content">
 					<Header />
-					<Overlay className="Overlay">
-						<Centerbox>{this.getPieceSection()}</Centerbox>
+					<PieceContainer className="PieceContainer">
+						<Piece className="Piece">
+							{this.getPieceSection()}
+						</Piece>
 						<ActionsContainer className="ActionsContainer">
-							<ReloadBtn
+							<ReactionButton
+								onClick={() => {
+									console.log("HATED THIS!!!");
+								}}
+							>
+								<AiFillCloseCircle size={"5em"} />
+							</ReactionButton>
+							<ReloadBtn // TODO: use react icons instead of this nonsense
 								colors={colors}
 								onClick={() => this.getDisplayPiece()}
 							>
-								<ReactSVG src={svg} />
+								<AiOutlineReload size={80} />
 							</ReloadBtn>
+							<ReactionButton
+								onClick={() => {
+									console.log("LIKED THIS!!!");
+								}}
+							>
+								<AiFillHeart size={"5em"} />
+							</ReactionButton>
 						</ActionsContainer>
-					</Overlay>
+					</PieceContainer>
 					<Footer colors={colors} />
 				</FancyBackground>
 			</App>

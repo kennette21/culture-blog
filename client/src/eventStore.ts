@@ -1,20 +1,15 @@
 import firebase from "./firebase";
 
-export interface PieceWithMeta {
-	piece: PublishedEvent;
-	noNewEvents: boolean;
-}
-
-export interface Event {
-	event_type: "view" | "publish";
-}
-
 export enum PieceCategory {
 	look = "look",
 	listen = "listen",
 	watch = "watch",
 	do = "do",
 	read = "read",
+}
+
+export interface Event {
+	event_type: "view" | "publish";
 }
 
 export interface PublishEvent extends Event {
@@ -34,6 +29,11 @@ export interface ViewEvent extends Event {
 	event_type: "view";
 	piece_id: string;
 	user_uid: string;
+}
+
+export interface PieceWithMeta {
+	piece: PublishedEvent;
+	noNewEvents: boolean;
 }
 
 // commands ---------
