@@ -12,6 +12,8 @@ import {
 	AiOutlineReload,
 	AiFillHeart,
 } from "react-icons/ai";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 declare global {
 	interface Window {
@@ -200,10 +202,22 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 		}
 	};
 
+	notify = (msg: string) => toast.success(msg);
+
 	render() {
 		const { colors } = this.state;
 		return (
 			<App className="App">
+				<ToastContainer
+					position="bottom-left"
+					autoClose={3000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+				/>
 				<FancyBackground colors={colors} className="App-content">
 					<Header />
 					<PieceContainer className="PieceContainer">
@@ -212,9 +226,7 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 						</Piece>
 						<ActionsContainer className="ActionsContainer">
 							<ReactionButton
-								onClick={() => {
-									console.log("HATED THIS!!!");
-								}}
+								onClick={() => this.notify("disliked piece")}
 							>
 								<AiFillCloseCircle size={"5em"} />
 							</ReactionButton>
@@ -225,9 +237,7 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 								<AiOutlineReload size={80} />
 							</ReloadBtn>
 							<ReactionButton
-								onClick={() => {
-									console.log("LIKED THIS!!!");
-								}}
+								onClick={() => this.notify("liked piece")}
 							>
 								<AiFillHeart size={"5em"} />
 							</ReactionButton>
