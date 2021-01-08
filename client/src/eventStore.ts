@@ -9,7 +9,7 @@ export enum PieceCategory {
 }
 
 export interface Event {
-	event_type: "view" | "publish";
+	event_type: "view" | "publish" | "react";
 }
 
 export interface PublishEvent extends Event {
@@ -31,6 +31,13 @@ export interface ViewEvent extends Event {
 	user_uid: string;
 }
 
+export interface ReactEvent extends Event {
+	event_type: "react";
+	piece_id: string;
+	user_uid: string;
+	reaction: "like" | "dislike";
+}
+
 export interface PieceWithMeta {
 	piece: PublishedEvent;
 	noNewEvents: boolean;
@@ -39,17 +46,28 @@ export interface PieceWithMeta {
 // commands ---------
 
 export const logPublish = async (publishEvent: PublishEvent) => {
+	logEvent(publishEvent);
+};
+
+export const logEvent = async (event: Event) => {
 	return firebase
 		.firestore()
 		.collection("events")
-		.add(publishEvent)
-		.then(() =>
-			console.log(
-				"successfully logged publish event " +
-					JSON.stringify(publishEvent)
-			)
-		)
-		.catch(() => console.log("failed to log publish"));
+		.add(event)
+		.then((docRef) => {
+			docRef
+				.update({
+					timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+				})
+				.catch(() =>
+					console.log(
+						"trouble updating timestamp of docRef with id: " +
+							docRef.id
+					)
+				);
+			console.log("successfully logged event " + JSON.stringify(event));
+		})
+		.catch(() => console.log("failed to log event"));
 };
 
 export const logView = async (pieceId: string, viewerUserUid: string) => {
@@ -58,14 +76,7 @@ export const logView = async (pieceId: string, viewerUserUid: string) => {
 		piece_id: pieceId,
 		user_uid: viewerUserUid,
 	};
-	firebase
-		.firestore()
-		.collection("events")
-		.add(viewEvent)
-		.then(() =>
-			console.log("successfully logged view " + JSON.stringify(viewEvent))
-		)
-		.catch(() => console.log("failed to log view"));
+	logEvent(viewEvent); // TODO: get rid of logView func all together
 };
 
 // queries ---------

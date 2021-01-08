@@ -6,13 +6,19 @@ import styled from "styled-components";
 import FancyBackground, { FancyProps } from "../styles";
 import Header from "./common/Header";
 import Footer from "./common/Footer";
-import { getRelevantPiece, PublishedEvent } from "../eventStore";
+import {
+	getRelevantPiece,
+	logEvent,
+	PublishedEvent,
+	ReactEvent,
+} from "../eventStore";
 import {
 	AiFillCloseCircle,
 	AiOutlineReload,
 	AiFillHeart,
 } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
+import firebase from "../firebase";
 import "react-toastify/dist/ReactToastify.css";
 
 declare global {
@@ -33,9 +39,9 @@ const PieceContainer = styled.div`
 	flex-direction: column;
 	border-radius: 16px;
 	margin-top: 60px;
-	margin-bottom: 60px;
+	margin-bottom: 80px;
 	/* align-items: right; */
-	/* justify-content: center; */
+	justify-content: space-around;
 	font-size: calc(10px + 2vmin);
 	color: rgba(0%, 0%, 0%, 100%);
 `;
@@ -78,12 +84,17 @@ const ReloadBtn = styled.div<FancyProps>`
 const ReactionButton = styled.div`
 	width: 50px;
 	height: 100%;
-	border-radius: 3px;
+	border-radius: 25px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	border: none;
 	background: none;
+
+	&:hover {
+		background-color: gray;
+		transition: 0.2s;
+	}
 `;
 
 const Piece = styled.div`
@@ -104,6 +115,7 @@ const ActionsContainer = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	margin-bottom: 20px;
 	height: 100px;
 	width: 100%;
 `;
@@ -204,6 +216,25 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 
 	notify = (msg: string) => toast.success(msg);
 
+	logReaction = (reaction: "like" | "dislike") => {
+		const { piece } = this.state;
+		const user_uid = firebase.auth().currentUser?.uid; // TODO: this is not so good, always fetching the uid this way. Should set in state.
+		if (piece && user_uid) {
+			const reactEvent: ReactEvent = {
+				event_type: "react",
+				piece_id: piece.id,
+				user_uid: user_uid,
+				reaction: reaction,
+			};
+			logEvent(reactEvent)
+				.then(() => toast.success(reaction + " successful"))
+				.catch(() => toast.error(reaction + " failed to log"));
+		} else {
+			toast.error("cannot react because no piece or user_uid is null");
+		}
+		this.getDisplayPiece();
+	};
+
 	render() {
 		const { colors } = this.state;
 		return (
@@ -226,18 +257,18 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 						</Piece>
 						<ActionsContainer className="ActionsContainer">
 							<ReactionButton
-								onClick={() => this.notify("disliked piece")}
+								onClick={() => this.logReaction("dislike")}
 							>
 								<AiFillCloseCircle size={"5em"} />
 							</ReactionButton>
-							<ReloadBtn // TODO: use react icons instead of this nonsense
+							<ReloadBtn
 								colors={colors}
 								onClick={() => this.getDisplayPiece()}
 							>
 								<AiOutlineReload size={80} />
 							</ReloadBtn>
 							<ReactionButton
-								onClick={() => this.notify("liked piece")}
+								onClick={() => this.logReaction("like")}
 							>
 								<AiFillHeart size={"5em"} />
 							</ReactionButton>

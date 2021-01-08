@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import {FancySelect} from '../CreatePage';
 
 const FooterComp = styled.div`
     color: ${props => props.colors.first};
@@ -12,7 +13,10 @@ const FooterComp = styled.div`
     margin-right: 10px;
 `;
 
-const FancySelect = styled.select``;
+const FanSel = styled(FancySelect)`
+    color: ${props => props.colors.first};
+    font-size: 38px;
+`;
 
 
 /***
@@ -44,17 +48,31 @@ class Footer extends Component {
     handleChange(subState) {
         this.setState(subState);
     }
-    
-    render() {
+
+    getCultureBlogCategory = () => {
         return (
-            <FooterComp colors={this.props.colors}>
-                <FancySelect colors={this.props.colors} value={this.state.filter} onChange={event => this.handleChange({filter: event.target.value})}>
+            <FancySelect colors={this.props.colors} value={this.state.filter} onChange={event => this.handleChange({filter: event.target.value})}>
+                            <option value="listen">Listen</option>
                             <option value="listen">Listen</option>
                             <option value="watch">Watch</option>
                             <option value="read">Read</option>
                             <option value="look">Look</option>
                             <option value="do">Do</option>
-                        </FancySelect> culture blog
+                        </FancySelect>
+        )
+    }
+    
+    render() {
+        return (
+            <FooterComp colors={this.props.colors}>
+                <FanSel colors={this.props.colors} value={this.state.filter} onChange={event => this.handleChange({filter: event.target.value})}>
+                            <option value="all">The</option>
+                            <option value="listen">Listen</option>
+                            <option value="watch">Watch</option>
+                            <option value="read">Read</option>
+                            <option value="look">Look</option>
+                            <option value="do">Do</option>
+                        </FanSel> culture blog
             </FooterComp>
         );
     }

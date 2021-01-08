@@ -83,8 +83,29 @@ class LoginPage extends Component<RouteComponentProps, LoginPageState> {
 			firebase
 				.auth()
 				.createUserWithEmailAndPassword(username, password)
-				.then(() => {
-					window.location.href = "/random";
+				.then((userCred) => {
+					const uid = userCred.user?.uid;
+					if (uid) {
+						const user = {
+							uid: uid,
+						};
+						firebase
+							.firestore()
+							.collection("users")
+							.add(user)
+							.then(() => console.log("added application user"))
+							.catch((e) =>
+								console.log(
+									"failed to add application user b/c error: " +
+										e
+								)
+							)
+							.finally(() => (window.location.href = "/random"));
+					} else {
+						console.log(
+							"couldnt create application user because no uid after creation"
+						);
+					}
 				})
 				.catch((error) => {
 					console.log(

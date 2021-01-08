@@ -67,18 +67,6 @@ class CreatePage extends Component<RouteComponentProps, CreatePageState> {
 		}
 	}
 
-	// async publishPiece(publish_event: any) {
-	// 	const docRef = firebase
-	// 		.firestore()
-	// 		.collection("events")
-	// 		.add(publish_event);
-	// 	docRef.then(() => {
-	// 		this.setState({
-	// 			...IntialSubState,
-	// 		});
-	// 	});
-	// }
-
 	componentDidMount() {
 		this.setState({ colors: getBackgroundColors() });
 	}
