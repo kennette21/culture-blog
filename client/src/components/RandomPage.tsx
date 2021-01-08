@@ -109,6 +109,7 @@ const PieceInfo = styled.div`
 	justify-content: center;
 	min-height: 300px;
 	max-width: 800px;
+	margin: 0 auto;
 `;
 
 const ActionsContainer = styled.div`

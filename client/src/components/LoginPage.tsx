@@ -85,9 +85,11 @@ class LoginPage extends Component<RouteComponentProps, LoginPageState> {
 				.createUserWithEmailAndPassword(username, password)
 				.then((userCred) => {
 					const uid = userCred.user?.uid;
+					const email = userCred.user?.email;
 					if (uid) {
 						const user = {
 							uid: uid,
+							email: email ? email : "no email",
 						};
 						firebase
 							.firestore()
