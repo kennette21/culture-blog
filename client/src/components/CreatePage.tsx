@@ -6,7 +6,7 @@ import { FancyBackground, FancyInput, FancyButton } from "../styles";
 import firebase from "../firebase";
 import Header from "./common/Header";
 import Footer from "./common/Footer";
-import { logPublish, PieceCategory, PublishEvent } from "../eventStore";
+import { logEvent, PieceCategory, PublishEvent } from "../eventStore";
 
 const App = styled.div`
 	text-align: center;
@@ -60,7 +60,7 @@ class CreatePage extends Component<RouteComponentProps, CreatePageState> {
 				category: this.state.category as PieceCategory,
 				author_uid: author.uid,
 			};
-			logPublish(publishEvent);
+			logEvent(publishEvent);
 			event.preventDefault();
 		} else {
 			console.log("cannot create event, could not find firebase user");

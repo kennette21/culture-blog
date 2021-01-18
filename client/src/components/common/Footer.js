@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import {FancySelect} from '../CreatePage';
+import { FancyButton } from "../../styles";
 
 const FooterComp = styled.div`
     color: ${props => props.colors.first};
@@ -11,6 +12,14 @@ const FooterComp = styled.div`
     font-size: 42px;
     margin-top: 10px;
     margin-right: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+`;
+
+const CreateButton = styled(FancyButton)`
+    width: 20%;
 `;
 
 const FanSel = styled(FancySelect)`
@@ -72,7 +81,8 @@ class Footer extends Component {
                             <option value="read">Read</option>
                             <option value="look">Look</option>
                             <option value="do">Do</option>
-                        </FanSel> culture blog
+                        </FanSel> 
+                        <div> culture blog</div>
             </FooterComp>
         );
     }

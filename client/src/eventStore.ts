@@ -9,6 +9,7 @@ export enum PieceCategory {
 }
 
 export interface Event {
+	// todo: event should have an id, generate the ID here and store that.
 	event_type: "view" | "publish" | "react";
 }
 
@@ -45,10 +46,6 @@ export interface PieceWithMeta {
 
 // commands ---------
 
-export const logPublish = async (publishEvent: PublishEvent) => {
-	logEvent(publishEvent);
-};
-
 export const logEvent = async (event: Event) => {
 	return firebase
 		.firestore()
@@ -68,15 +65,6 @@ export const logEvent = async (event: Event) => {
 			console.log("successfully logged event " + JSON.stringify(event));
 		})
 		.catch(() => console.log("failed to log event"));
-};
-
-export const logView = async (pieceId: string, viewerUserUid: string) => {
-	const viewEvent: ViewEvent = {
-		event_type: "view",
-		piece_id: pieceId,
-		user_uid: viewerUserUid,
-	};
-	logEvent(viewEvent); // TODO: get rid of logView func all together
 };
 
 // queries ---------
@@ -134,7 +122,12 @@ export const getRelevantPiece = async (): Promise<PieceWithMeta> => {
 		console.log(unseenPublishEvents);
 		event = unseenPublishEvents[0];
 		if (curUserUid) {
-			logView(event.id, curUserUid);
+			const viewEvent: ViewEvent = {
+				event_type: "view",
+				piece_id: event.id,
+				user_uid: curUserUid,
+			};
+			logEvent(viewEvent);
 		}
 		noNewEvents = false;
 	}

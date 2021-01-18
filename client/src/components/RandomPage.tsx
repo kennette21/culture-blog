@@ -171,7 +171,7 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 	getIframelyPieceHtml = async (url: string) => {
 		const resp = await (
 			await fetch(
-				"http://iframe.ly/api/iframely?url=" +
+				"https://iframe.ly/api/iframely?url=" +
 					url +
 					"&api_key=532610e8a5ae3742540e3a&iframe=1&omit_script=1"
 			)
