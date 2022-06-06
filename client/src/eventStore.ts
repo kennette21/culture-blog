@@ -69,10 +69,11 @@ export const logEvent = async (event: Event) => {
 
 // queries ---------
 
-export const getRelevantPiece = async (): Promise<PieceWithMeta> => {
+export const getRelevantPiece = async (category: PieceCategory | null): Promise<PieceWithMeta> => {
 	const eventsRef = firebase.firestore().collection("events");
 	const publishedEventsQuery = await eventsRef
 		.where("event_type", "==", "publish")
+		.where("category", "==", category) // can be null so not good enough
 		.get();
 	if (publishedEventsQuery.empty) {
 		console.log("No publish events.");
