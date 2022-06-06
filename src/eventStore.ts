@@ -69,7 +69,9 @@ export const logEvent = async (event: Event) => {
 
 // queries ---------
 
-export const getRelevantPiece = async (category: PieceCategory | null): Promise<PieceWithMeta> => {
+export const getRelevantPiece = async (
+	category: PieceCategory | null
+): Promise<PieceWithMeta> => {
 	const eventsRef = firebase.firestore().collection("events");
 	const publishedEventsQuery = await eventsRef
 		.where("event_type", "==", "publish")
@@ -132,6 +134,7 @@ export const getRelevantPiece = async (category: PieceCategory | null): Promise<
 		}
 		noNewEvents = false;
 	}
+	console.log("whoohaa here is an event: ", event);
 	return {
 		piece: {
 			title: event.title, // todo: desparately need to cleanup frontend components to match what is in firebase
