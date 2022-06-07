@@ -9,6 +9,7 @@ import Footer from "./common/Footer";
 import {
 	getRelevantPiece,
 	logEvent,
+	PieceCategory,
 	PublishedEvent,
 	ReactEvent,
 } from "../eventStore";
@@ -155,6 +156,7 @@ interface RandomPageState {
 	contentHtml: string | null;
 	noNewEvents: boolean;
 	colors: GradientColors;
+	selectedCategory: PieceCategory | null;
 }
 
 class RandomPage extends Component<RouteComponentProps, RandomPageState> {
@@ -164,6 +166,7 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 			piece: null,
 			contentHtml: null,
 			noNewEvents: false,
+			selectedCategory: null,
 			colors: getBackgroundColors(),
 		};
 	}
@@ -187,7 +190,9 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 	};
 
 	getDisplayPiece = async () => {
-		const relevantPiece = await getRelevantPiece();
+		const relevantPiece = await getRelevantPiece(
+			this.state.selectedCategory
+		);
 		this.getIframelyPieceHtml(relevantPiece.piece.link);
 		this.setState({
 			piece: relevantPiece.piece,

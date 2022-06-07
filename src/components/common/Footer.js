@@ -14,17 +14,8 @@ const FooterComp = styled.div`
     margin-right: 10px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     width: 100%;
-`;
-
-const CreateButton = styled(FancyButton)`
-    width: 20%;
-`;
-
-const FanSel = styled(FancySelect)`
-    color: ${props => props.colors.first};
-    font-size: 38px;
 `;
 
 
@@ -61,7 +52,7 @@ class Footer extends Component {
     getCultureBlogCategory = () => {
         return (
             <FancySelect colors={this.props.colors} value={this.state.filter} onChange={event => this.handleChange({filter: event.target.value})}>
-                            <option value="listen">Listen</option>
+                            <option value="the">The</option>
                             <option value="listen">Listen</option>
                             <option value="watch">Watch</option>
                             <option value="read">Read</option>
@@ -74,15 +65,8 @@ class Footer extends Component {
     render() {
         return (
             <FooterComp colors={this.props.colors}>
-                <FanSel colors={this.props.colors} value={this.state.filter} onChange={event => this.handleChange({filter: event.target.value})}>
-                            <option value="all">The</option>
-                            <option value="listen">Listen</option>
-                            <option value="watch">Watch</option>
-                            <option value="read">Read</option>
-                            <option value="look">Look</option>
-                            <option value="do">Do</option>
-                        </FanSel> 
-                        <div> culture blog</div>
+                {this.getCultureBlogCategory()}
+                <div> culture blog</div>
             </FooterComp>
         );
     }
