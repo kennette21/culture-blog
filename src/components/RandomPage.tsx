@@ -156,7 +156,7 @@ interface RandomPageState {
 	contentHtml: string | null;
 	noNewEvents: boolean;
 	colors: GradientColors;
-	selectedCategory: PieceCategory | null
+	selectedCategory: PieceCategory | null;
 }
 
 class RandomPage extends Component<RouteComponentProps, RandomPageState> {
@@ -190,7 +190,9 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 	};
 
 	getDisplayPiece = async () => {
-		const relevantPiece = await getRelevantPiece(this.state.selectedCategory);
+		const relevantPiece = await getRelevantPiece(
+			this.state.selectedCategory
+		);
 		this.getIframelyPieceHtml(relevantPiece.piece.link);
 		this.setState({
 			piece: relevantPiece.piece,

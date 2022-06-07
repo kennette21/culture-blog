@@ -73,19 +73,18 @@ export const getRelevantPiece = async (
 	category: PieceCategory | null
 ): Promise<PieceWithMeta> => {
 	const eventsRef = firebase.firestore().collection("events");
-	const publishedEventsQuery = await eventsRef
-		.where("event_type", "==", "publish")
-		.where("category", "==", category) // can be null so not good enough
-		.get();
-	if (publishedEventsQuery.empty) {
-		console.log("No publish events.");
+	let query = eventsRef.where("event_type", "==", "publish");
+	query = category ? query.where("category", "==", category) : query;
+	const events = await query.get();
+	if (events.empty) {
+		console.log("No publish pieces.");
 	}
 	const publishedEvents: PublishedEvent[] = [];
-	publishedEventsQuery.forEach(function (ev) {
+	events.forEach(function (ev) {
 		publishedEvents.push(({
 			id: ev.id,
 			...ev.data(),
-		} as unknown) as PublishedEvent);
+		} as unknown) as PublishedEvent); // todo: fix gross typescript hack
 	});
 
 	const curUserUid = firebase.auth().currentUser

@@ -52,7 +52,6 @@ class Header extends Component {
     render() {
         return (
             <HeaderComp>
-                <div>PARTY ANIMALS!</div>npm install -g firebase-tools
                 {this.getHeaderDisplay()}
             </HeaderComp>
         );
