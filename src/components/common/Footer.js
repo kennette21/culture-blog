@@ -65,6 +65,7 @@ class Footer extends Component {
     render() {
         return (
             <FooterComp colors={this.props.colors}>
+                <div>party animals</div>
                 {this.getCultureBlogCategory()}
                 <div> culture blog</div>
             </FooterComp>
