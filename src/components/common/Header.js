@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import firebase from '../../firebase';
+import { Link } from "@reach/router";
 
 const HeaderComp = styled.div`
     position: fixed;
@@ -45,7 +46,7 @@ class Header extends Component {
         if (user) {
             return user.email //TODO: should link to profile page where user can set some data
         } else {
-            return <a href="/login">click here to sign in</a>
+            return <Link to="/login">Sign in</Link>
         }
     }
 

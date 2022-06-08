@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FancyBackground, App } from "../styles";
+import { FancyBackground, AppContainer } from "../styles";
 import firebase from "../firebase";
 import getBackgroundColors, { GradientColors } from "../gradients";
 import { RouteComponentProps } from "@reach/router";
@@ -56,11 +56,11 @@ class SignoutPage extends Component<RouteComponentProps, SignoutPageState> {
 	render() {
 		const { colors } = this.state;
 		return (
-			<App className="App">
+			<AppContainer className="App">
 				<FancyBackground colors={colors} className="App-content">
 					<div>{this.signoutStatus()}</div>
 				</FancyBackground>
-			</App>
+			</AppContainer>
 		);
 	}
 }
