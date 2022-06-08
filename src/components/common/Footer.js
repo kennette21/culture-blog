@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import {FancySelect} from '../CreatePage';
-import { FancyButton } from "../../styles";
 
 const FooterComp = styled.div`
     color: ${props => props.colors.first};
