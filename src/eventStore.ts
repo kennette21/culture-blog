@@ -6,6 +6,7 @@ export enum PieceCategory {
 	watch = "watch",
 	do = "do",
 	read = "read",
+	the = "the",
 }
 
 export interface Event {

@@ -3,6 +3,7 @@ import { FancyBackground, AppContainer } from "../styles";
 import firebase from "../firebase";
 import getBackgroundColors, { GradientColors } from "../gradients";
 import { RouteComponentProps } from "@reach/router";
+import Footer from "./common/Footer";
 
 interface SignoutPageState {
 	colors: GradientColors;
@@ -59,6 +60,12 @@ class SignoutPage extends Component<RouteComponentProps, SignoutPageState> {
 			<AppContainer className="App">
 				<FancyBackground colors={colors} className="App-content">
 					<div>{this.signoutStatus()}</div>
+					<Footer
+						colors={colors}
+						showFilter={false}
+						onChangeCategory={() => {}}
+						filter={""}
+					/>
 				</FancyBackground>
 			</AppContainer>
 		);

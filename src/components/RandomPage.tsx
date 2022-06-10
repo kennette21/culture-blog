@@ -104,6 +104,8 @@ const PieceVisual = styled.div`
 	padding: 0 20px;
 `;
 
+const IframelyContainer = styled.div``;
+
 const PieceInfo = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -153,6 +155,12 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 		});
 	};
 
+	selectCategory = (cat: PieceCategory) => {
+		this.setState({
+			selectedCategory: cat,
+		});
+	};
+
 	getDisplayPiece = async () => {
 		const relevantPiece = await getRelevantPiece(
 			this.state.selectedCategory,
@@ -195,7 +203,7 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 						{piece.event.title}
 					</PieceTitle>
 					{piece.contentHtml && (
-						<div
+						<IframelyContainer
 							dangerouslySetInnerHTML={{
 								__html: piece.contentHtml,
 							}}
@@ -248,7 +256,12 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 							</ReactionButton>
 						</ActionsContainer>
 					</PieceContainer>
-					<Footer colors={colors} />
+					<Footer
+						colors={colors}
+						onChangeCategory={this.selectCategory}
+						showFilter={true}
+						filter={this.state.selectedCategory || "the"}
+					/>
 				</FancyBackground>
 			</App>
 		);

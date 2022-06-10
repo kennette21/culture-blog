@@ -176,7 +176,12 @@ class LoginPage extends Component<RouteComponentProps, LoginPageState> {
 						</div>
 						{this.renderWantToSignup()}
 					</form>
-					<Footer colors={colors} />
+					<Footer
+						colors={colors}
+						showFilter={false}
+						onChangeCategory={() => {}}
+						filter={""}
+					/>
 				</FancyBackground>
 			</App>
 		);

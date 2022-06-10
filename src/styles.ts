@@ -33,14 +33,13 @@ export const FancyBackground = styled.div<FancyProps>`
 `;
 
 export const FancyInput = styled.input<FancyProps>`
-	padding: 1rem 1.4rem;
 	background: transparent;
-	font-size: 32px;
+	font-size: 42px;
 	transition: all 0.3s;
 	border: none;
 	border-bottom: 0.3rem solid transparent;
 	outline-width: 0;
-	color: pink;
+	color: ${(props) => props.colors.first};
 
 	&:focus {
 		outline-width: 0;
@@ -48,11 +47,13 @@ export const FancyInput = styled.input<FancyProps>`
 	}
 `;
 
+export const FancySelect = FancyInput.withComponent("select");
+
 export const FancyButton = styled(FancyInput)<FancyProps>`
 	margin: 10px 0;
 	border: 0.3rem solid ${(props) => props.colors.first};
 	border-radius: 9px;
-	color: pink;
+	color: ${(props) => props.colors.first};
 	width: 100%;
 
 	&:hover {

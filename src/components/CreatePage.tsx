@@ -2,11 +2,17 @@ import React, { Component } from "react";
 import { RouteComponentProps } from "@reach/router";
 import styled from "styled-components";
 import getBackgroundColors, { GradientColors } from "../gradients";
-import { FancyBackground, FancyInput, FancyButton } from "../styles";
+import {
+	FancyBackground,
+	FancyInput,
+	FancyButton,
+	FancySelect,
+} from "../styles";
 import firebase from "../firebase";
 import Header from "./common/Header";
 import Footer from "./common/Footer";
 import { logEvent, PieceCategory, PublishEvent } from "../eventStore";
+import CategorySelect from "./common/CategorySelect";
 
 const App = styled.div`
 	text-align: center;
@@ -15,10 +21,6 @@ const App = styled.div`
 const PieceForm = styled.form`
 	display: flex;
 	flex-direction: column;
-`;
-
-export const FancySelect = styled(FancyInput.withComponent("select"))`
-	color: pink;
 `;
 
 interface CreatePageState {
@@ -105,28 +107,27 @@ class CreatePage extends Component<RouteComponentProps, CreatePageState> {
 								this.handleChange({ why: event.target.value })
 							}
 						/>
-						<FancySelect
+						<CategorySelect
 							colors={colors}
-							value={this.state.category}
-							onChange={(event) =>
+							filter={this.state.category}
+							onChangeCategory={(cat: PieceCategory) =>
 								this.handleChange({
-									category: event.target.value,
+									category: cat,
 								})
 							}
-						>
-							<option value="listen">Listen</option>
-							<option value="watch">Watch</option>
-							<option value="read">Read</option>
-							<option value="look">Look</option>
-							<option value="do">Do</option>
-						</FancySelect>
+						/>
 						<FancyButton
 							colors={colors}
 							type="submit"
 							value="Create"
 						/>
 					</PieceForm>
-					<Footer colors={colors} />
+					<Footer
+						colors={colors}
+						showFilter={false}
+						onChangeCategory={() => {}}
+						filter={""}
+					/>
 				</FancyBackground>
 			</App>
 		);
