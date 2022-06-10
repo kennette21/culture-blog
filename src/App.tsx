@@ -10,7 +10,6 @@ const App = () => {
 	return (
 		<Router>
 			<RandomPage default path="/random" />
-			<PiecesPage path="/all" />
 			<CreatePage path="/create" />
 			<LoginPage path="/login" />
 			<SignoutPage path="/logout" />

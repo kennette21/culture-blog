@@ -9,8 +9,8 @@ import Footer from "./common/Footer";
 import {
 	getRelevantPiece,
 	logEvent,
+	Piece,
 	PieceCategory,
-	PublishedEvent,
 	ReactEvent,
 } from "../eventStore";
 import {
@@ -98,7 +98,7 @@ const ReactionButton = styled.div`
 	}
 `;
 
-const Piece = styled.div`
+const PieceVisual = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 0 20px;
@@ -122,41 +122,12 @@ const ActionsContainer = styled.div`
 	width: 100%;
 `;
 
-// const RandomPageWithHooks = () => {
-// 	// const [state, setState()] = useState({ link: '', title: ''})
-
-// 	useEffect(() => {
-// 		// logic
-// 	}, [link, state])
-
-// 	return  (
-// 	<App className="App">
-// 		<FancyBackground colors={colors} className="App-content">
-// 			<Header />
-// 			<Overlay className="Overlay">
-// 				<Centerbox>
-// 					<PieceInfo className="PieceInfo">
-// 						<PieceTitle href={link}>{title}</PieceTitle>
-// 						<LeftTextDiv>{why}</LeftTextDiv>
-// 					</PieceInfo>
-// 				</Centerbox>
-// 				<ActionsContainer className="ActionsContainer">
-// 					<ReloadBtn colors={colors} onClick={() => getRandomPiece()}>
-// 						<ReactSVG src={svg} />
-// 					</ReloadBtn>
-// 				</ActionsContainer>
-// 			</Overlay>
-// 			<Footer colors={colors}/>
-// 		</FancyBackground>
-// 	</App>)
-// }
-
 interface RandomPageState {
-	piece: PublishedEvent | null; // TODO: return an array of pieces and store them in FE state
-	contentHtml: string | null;
+	piece: Piece | null; // TODO: return an array of pieces and store them in FE state
 	noNewEvents: boolean;
 	colors: GradientColors;
 	selectedCategory: PieceCategory | null;
+	userUid: string | null;
 }
 
 class RandomPage extends Component<RouteComponentProps, RandomPageState> {
@@ -164,72 +135,44 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 		super(props);
 		this.state = {
 			piece: null,
-			contentHtml: null,
 			noNewEvents: false,
 			selectedCategory: null,
 			colors: getBackgroundColors(),
+			userUid: null,
 		};
 	}
 
-	getIframelyPieceHtml = async (url: string) => {
-		const resp = await (
-			await fetch(
-				"https://iframe.ly/api/iframely?url=" +
-					url +
-					"&api_key=532610e8a5ae3742540e3a&iframe=1&omit_script=1"
-			)
-		).json(); // TODO: extract api key
-		// TODO: some error handling if iframely does not like url, just return some simple html ancor for link
-		this.setState({
-			contentHtml: resp.html,
-		});
-	};
-
 	componentDidMount = () => {
 		this.getDisplayPiece();
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user) {
+				this.setState({
+					userUid: user.uid,
+				});
+			}
+		});
 	};
 
 	getDisplayPiece = async () => {
 		const relevantPiece = await getRelevantPiece(
-			this.state.selectedCategory
+			this.state.selectedCategory,
+			this.state.userUid
 		);
-		this.getIframelyPieceHtml(relevantPiece.piece.link);
 		this.setState({
 			piece: relevantPiece.piece,
 			noNewEvents: relevantPiece.noNewEvents,
 		});
 	};
 
-	getPieceSection = () => {
-		const { piece, contentHtml } = this.state;
-
-		if (piece) {
-			return (
-				<PieceInfo className="PieceInfo">
-					<PieceTitle href={piece.link}>{piece.title}</PieceTitle>
-					{contentHtml && (
-						<div
-							dangerouslySetInnerHTML={{ __html: contentHtml }}
-						/>
-					)}
-					<LeftTextDiv>{piece.why}</LeftTextDiv>
-				</PieceInfo>
-			);
-		} else {
-			return <div>Loading</div>; // TODO: better loading screen exp: spinner? thinking face?
-		}
-	};
-
 	notify = (msg: string) => toast.success(msg);
 
 	logReaction = (reaction: "like" | "dislike") => {
-		const { piece } = this.state;
-		const user_uid = firebase.auth().currentUser?.uid; // TODO: this is not so good, always fetching the uid this way. Should set in state.
-		if (piece && user_uid) {
+		const { piece, userUid } = this.state;
+		if (piece && userUid) {
 			const reactEvent: ReactEvent = {
 				event_type: "react",
-				piece_id: piece.id,
-				user_uid: user_uid,
+				piece_id: piece.event.id,
+				user_uid: userUid,
 				reaction: reaction,
 			};
 			logEvent(reactEvent)
@@ -238,7 +181,32 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 		} else {
 			toast.error("cannot react because no piece or user_uid is null");
 		}
+		// load new piece
 		this.getDisplayPiece();
+	};
+
+	getPieceSection = () => {
+		const { piece } = this.state;
+
+		if (piece) {
+			return (
+				<PieceInfo className="PieceInfo">
+					<PieceTitle href={piece.event.link}>
+						{piece.event.title}
+					</PieceTitle>
+					{piece.contentHtml && (
+						<div
+							dangerouslySetInnerHTML={{
+								__html: piece.contentHtml,
+							}}
+						/>
+					)}
+					<LeftTextDiv>{piece.event.why}</LeftTextDiv>
+				</PieceInfo>
+			);
+		} else {
+			return <div>Loading</div>; // TODO: better loading screen exp: spinner? thinking face?
+		}
 	};
 
 	render() {
@@ -258,9 +226,9 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 				<FancyBackground colors={colors} className="App-content">
 					<Header />
 					<PieceContainer className="PieceContainer">
-						<Piece className="Piece">
+						<PieceVisual className="Piece">
 							{this.getPieceSection()}
-						</Piece>
+						</PieceVisual>
 						<ActionsContainer className="ActionsContainer">
 							<ReactionButton
 								onClick={() => this.logReaction("dislike")}
