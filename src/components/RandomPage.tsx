@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import React, { Component, useState, useEffect } from "react";
-import { RouteComponentProps } from "@reach/router";
+import { RouteComponentProps, navigate } from "@reach/router";
 import { getBackgroundColors, GradientColors } from "../gradients";
 import styled from "styled-components";
 import FancyBackground, { FancyProps } from "../styles";
@@ -40,7 +40,6 @@ const PieceContainer = styled.div`
 	flex-direction: column;
 	border-radius: 16px;
 	margin-top: 60px;
-	margin-bottom: 80px;
 	/* align-items: right; */
 	justify-content: space-around;
 	font-size: calc(10px + 2vmin);
@@ -128,17 +127,19 @@ interface RandomPageState {
 	piece: Piece | null; // TODO: return an array of pieces and store them in FE state
 	noNewEvents: boolean;
 	colors: GradientColors;
-	selectedCategory: PieceCategory | null;
 	userUid: string | null;
 }
 
-class RandomPage extends Component<RouteComponentProps, RandomPageState> {
-	constructor(props: {}) {
+interface RandomPageProps extends RouteComponentProps {
+	category?: string;
+}
+
+class RandomPage extends Component<RandomPageProps, RandomPageState> {
+	constructor(props: RandomPageProps) {
 		super(props);
 		this.state = {
 			piece: null,
 			noNewEvents: false,
-			selectedCategory: null,
 			colors: getBackgroundColors(),
 			userUid: null,
 		};
@@ -153,17 +154,20 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 				});
 			}
 		});
-	};
-
-	selectCategory = (cat: PieceCategory) => {
-		this.setState({
-			selectedCategory: cat,
+		console.log("category and path: ", {
+			categroy: this.props.category,
+			path: this.props.path,
 		});
 	};
 
+	selectCategory = (cat: PieceCategory) => {
+		navigate(`/random/${cat}`);
+	};
+
 	getDisplayPiece = async () => {
+		console.log("curr category category ", this.props.category);
 		const relevantPiece = await getRelevantPiece(
-			this.state.selectedCategory,
+			(this.props.category as PieceCategory) || null,
 			this.state.userUid
 		);
 		this.setState({
@@ -218,6 +222,7 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 	};
 
 	render() {
+		console.log("checking if cat in path: ", this.props.category);
 		const { colors } = this.state;
 		return (
 			<App className="App">
@@ -260,7 +265,7 @@ class RandomPage extends Component<RouteComponentProps, RandomPageState> {
 						colors={colors}
 						onChangeCategory={this.selectCategory}
 						showFilter={true}
-						filter={this.state.selectedCategory || "the"}
+						filter={this.props.category || "def"}
 					/>
 				</FancyBackground>
 			</App>

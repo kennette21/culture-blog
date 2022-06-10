@@ -4,21 +4,50 @@ import { PieceCategory } from "../../eventStore";
 import { GradientColors } from "../../gradients";
 import { FancyProps } from "../../styles";
 import CategorySelect from "./CategorySelect";
+import { AiFillPlusCircle, AiOutlineSwitcher } from "react-icons/ai";
+import { navigate } from "@reach/router";
 
 const FooterComp = styled.div<FancyProps>`
 	color: ${(props) => props.colors.first};
 	font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
 		"Lucida Sans", Arial, sans-serif;
-	position: fixed;
-	bottom: 0;
-	right: 0;
 	font-size: 42px;
-	margin-top: 10px;
-	margin-right: 10px;
+	display: flex;
+	justify-self: flex-end;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+`;
+
+const ColorFlag = styled.div`
+	font-size: 20px;
+	color: black;
+	background-color: sandybrown;
+`;
+
+const SplitContainer = styled.div`
 	display: flex;
 	flex-direction: row;
+	justify-content: space-between;
+`;
+
+const LeftSide = styled.div`
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+`;
+
+const RightSide = styled.div`
+	display: flex;
 	justify-content: flex-end;
-	width: 100%;
+`;
+
+const ActionContainer = styled.div`
+	margin-left: 12px;
+`;
+
+const TitleContianer = styled.div`
+	margin-right: 12px;
 `;
 
 /***
@@ -47,16 +76,46 @@ interface Props {
 
 const Footer = (props: Props) => (
 	<FooterComp colors={props.colors}>
-		{props.showFilter && (
-			<CategorySelect
-				colors={props.colors}
-				filter={props.filter}
-				onChangeCategory={(cat: PieceCategory) =>
-					props.onChangeCategory(cat)
+		<LeftSide>
+			<ActionContainer
+				onClick={() =>
+					navigate(props.showFilter ? "/create" : "/random")
 				}
-			/>
-		)}
-		<div> culture blog</div>
+			>
+				{props.showFilter ? (
+					<AiFillPlusCircle
+						style={{ display: "block" }}
+						color={props.colors.second}
+						size={"1em"}
+					/>
+				) : (
+					<AiOutlineSwitcher
+						style={{ display: "block" }}
+						color={props.colors.second}
+						size={"1em"}
+					/>
+				)}
+			</ActionContainer>
+			<ColorFlag
+				onClick={() => {
+					console.log("colors: ", props.colors);
+				}}
+			>
+				SHIT COLORS
+			</ColorFlag>
+		</LeftSide>
+		<RightSide>
+			{props.showFilter && (
+				<CategorySelect
+					colors={props.colors}
+					filter={props.filter}
+					onChangeCategory={(cat: PieceCategory) =>
+						props.onChangeCategory(cat)
+					}
+				/>
+			)}
+			<TitleContianer> culture blog</TitleContianer>
+		</RightSide>
 	</FooterComp>
 );
 

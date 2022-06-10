@@ -165,6 +165,7 @@ export const getRelevantPiece = async (
 	category: PieceCategory | null,
 	userUid: string | null
 ): Promise<PieceWithMeta> => {
+	console.log("inspect category: ", category);
 	const eventsRef = firebase.firestore().collection("events");
 	const publishedEvents = await getPublishedEvents(eventsRef, category);
 

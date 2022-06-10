@@ -563,10 +563,6 @@ const gradients: GradientObj[] = [
 		colors: ["#43cea2", "#185a9d"],
 	},
 	{
-		name: "Pastel Orange at the Sun",
-		colors: ["#ffb347", "#ffcc33"],
-	},
-	{
 		name: "Twitch",
 		colors: ["#6441A5", "#2a0845"],
 	},
@@ -755,10 +751,6 @@ const gradients: GradientObj[] = [
 		colors: ["#4CA1AF", "#C4E0E5"],
 	},
 	{
-		name: "Colors Of Sky",
-		colors: ["#E0EAFC", "#CFDEF3"],
-	},
-	{
 		name: "Purple White",
 		colors: ["#BA5370", "#F4E2D8"],
 	},
@@ -852,10 +844,6 @@ const gradients: GradientObj[] = [
 		colors: ["#f79d00", "#64f38c"],
 	},
 	{
-		name: "Blood Red",
-		colors: ["#f85032", "#e73827"],
-	},
-	{
 		name: "Sun on the Horizon",
 		colors: ["#fceabb", "#f8b500"],
 	},
@@ -914,10 +902,6 @@ const gradients: GradientObj[] = [
 	{
 		name: "Black Rosé",
 		colors: ["#f4c4f3", "#fc67fa"],
-	},
-	{
-		name: "80's Purple",
-		colors: ["#41295a", "#2F0743"],
 	},
 	{
 		name: "Radar",
@@ -1504,27 +1488,12 @@ const gradients: GradientObj[] = [
 		colors: ["#152331", "#000000"],
 	},
 	{
-		name: "Whinehouse",
-		colors: ["#f7f7f7", "#b9a0a0", "#794747", "#4e2020", "#111111"],
-	},
-	{
 		name: "Hyper Blue",
 		colors: ["#59CDE9", "#0A2A88"],
 	},
 	{
 		name: "Racker",
 		colors: ["#EB0000", "#95008A", "#3300FC"],
-	},
-	{
-		name: "After the Rain",
-		colors: [
-			"#ff75c3",
-			"#ffa647",
-			"#ffe83f",
-			"#9fff5b",
-			"#70e2ff",
-			"#cd93ff",
-		],
 	},
 	{
 		name: "Neon Green",

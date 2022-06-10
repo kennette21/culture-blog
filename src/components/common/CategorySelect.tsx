@@ -6,6 +6,7 @@ import { FancySelect } from "../../styles";
 type Props = {
 	colors: GradientColors;
 	filter: string;
+	showAllOption?: boolean;
 	onChangeCategory: (category: PieceCategory) => void;
 }; /* use `interface` if exporting so that consumers can extend */
 
@@ -13,6 +14,7 @@ const CategorySelect = ({
 	colors,
 	filter,
 	onChangeCategory,
+	showAllOption = true
 }: Props) => {
 	return (
 		<FancySelect
@@ -20,7 +22,7 @@ const CategorySelect = ({
 			value={filter}
 			onChange={(e) => onChangeCategory(e.target.value as PieceCategory)} // todo generate options from PieceCategory
 		>
-			<option value="the">the</option>
+			{showAllOption && <option value="the">the</option>}
 			<option value="listen">listen</option>
 			<option value="watch">watch</option>
 			<option value="read">read</option>

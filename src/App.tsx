@@ -9,6 +9,7 @@ import SignoutPage from "./components/SignoutPage";
 const App = () => {
 	return (
 		<Router>
+			<RandomPage path="/random/:category" />
 			<RandomPage default path="/random" />
 			<CreatePage path="/create" />
 			<LoginPage path="/login" />

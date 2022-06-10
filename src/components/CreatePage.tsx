@@ -19,6 +19,7 @@ const App = styled.div`
 `;
 
 const PieceForm = styled.form`
+	margin: auto 0 auto 0;
 	display: flex;
 	flex-direction: column;
 `;
@@ -110,6 +111,7 @@ class CreatePage extends Component<RouteComponentProps, CreatePageState> {
 						<CategorySelect
 							colors={colors}
 							filter={this.state.category}
+							showAllOption={false}
 							onChangeCategory={(cat: PieceCategory) =>
 								this.handleChange({
 									category: cat,
