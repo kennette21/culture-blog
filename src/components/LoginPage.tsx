@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Component, FormEvent } from "react";
+import React, { Component, FormEvent } from "react";
 import styled from "styled-components";
 import {
 	FancyBackground,
@@ -176,7 +176,12 @@ class LoginPage extends Component<RouteComponentProps, LoginPageState> {
 						</div>
 						{this.renderWantToSignup()}
 					</form>
-					<Footer colors={colors} />
+					<Footer
+						colors={colors}
+						showFilter={false}
+						onChangeCategory={() => {}}
+						filter={""}
+					/>
 				</FancyBackground>
 			</App>
 		);
