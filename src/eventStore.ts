@@ -6,7 +6,7 @@ export enum PieceCategory {
 	watch = "watch",
 	do = "do",
 	read = "read",
-	the = "the",
+	all = "all",
 }
 
 export interface Event {
@@ -165,9 +165,12 @@ export const getRelevantPiece = async (
 	category: PieceCategory | null,
 	userUid: string | null
 ): Promise<PieceWithMeta> => {
-	console.log("inspect category: ", category);
+	console.log("inspecting category: ", category);
 	const eventsRef = firebase.firestore().collection("events");
-	const publishedEvents = await getPublishedEvents(eventsRef, category);
+	const publishedEvents = await getPublishedEvents(
+		eventsRef,
+		category === PieceCategory.all ? null : category
+	);
 
 	let event: PublishedEvent = getRandom(publishedEvents);
 	let noNewEvents: boolean = false;

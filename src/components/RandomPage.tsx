@@ -39,7 +39,6 @@ const PieceContainer = styled.div`
 	background-color: rgba(98%, 94.1%, 90.2%, 80%);
 	flex-direction: column;
 	border-radius: 16px;
-	margin-top: 60px;
 	/* align-items: right; */
 	justify-content: space-around;
 	font-size: calc(10px + 2vmin);
@@ -154,18 +153,14 @@ class RandomPage extends Component<RandomPageProps, RandomPageState> {
 				});
 			}
 		});
-		console.log("category and path: ", {
-			categroy: this.props.category,
-			path: this.props.path,
-		});
 	};
 
 	selectCategory = (cat: PieceCategory) => {
-		navigate(`/random/${cat}`);
+		navigate(`/random/${cat}`).then(() => this.getDisplayPiece());
 	};
 
 	getDisplayPiece = async () => {
-		console.log("curr category category ", this.props.category);
+		console.log("curr category ", this.props.category);
 		const relevantPiece = await getRelevantPiece(
 			(this.props.category as PieceCategory) || null,
 			this.state.userUid

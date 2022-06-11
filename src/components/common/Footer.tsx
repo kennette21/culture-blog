@@ -19,12 +19,6 @@ const FooterComp = styled.div<FancyProps>`
 	width: 100%;
 `;
 
-const ColorFlag = styled.div`
-	font-size: 20px;
-	color: black;
-	background-color: sandybrown;
-`;
-
 const LeftSide = styled.div`
 	display: flex;
 	justify-content: flex-start;
@@ -72,9 +66,7 @@ const Footer = (props: Props) => (
 	<FooterComp colors={props.colors}>
 		<LeftSide>
 			<ActionContainer
-				onClick={() =>
-					navigate(props.showFilter ? "/create" : "/random")
-				}
+				onClick={() => navigate(props.showFilter ? "/create" : "/")}
 			>
 				{props.showFilter ? (
 					<AiFillPlusCircle
@@ -89,14 +81,8 @@ const Footer = (props: Props) => (
 						size={"1em"}
 					/>
 				)}
+				{/* add a heart icon to show a list of favorited pieces */}
 			</ActionContainer>
-			<ColorFlag
-				onClick={() => {
-					console.log("colors: ", props.colors);
-				}}
-			>
-				SHIT COLORS
-			</ColorFlag>
 		</LeftSide>
 		<RightSide>
 			{props.showFilter && (

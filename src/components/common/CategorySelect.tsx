@@ -22,7 +22,7 @@ const CategorySelect = ({
 			value={filter}
 			onChange={(e) => onChangeCategory(e.target.value as PieceCategory)} // todo generate options from PieceCategory
 		>
-			{showAllOption && <option value="the">the</option>}
+			{showAllOption && <option value="all">the</option>}
 			<option value="listen">listen</option>
 			<option value="watch">watch</option>
 			<option value="read">read</option>
