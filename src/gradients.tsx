@@ -143,10 +143,6 @@ const gradients: GradientObj[] = [
 		colors: ["#cc2b5e", "#753a88"],
 	},
 	{
-		name: "Sexy Blue",
-		colors: ["#2193b0", "#6dd5ed"],
-	},
-	{
 		name: "Blooker20",
 		colors: ["#e65c00", "#F9D423"],
 	},
@@ -1092,10 +1088,6 @@ const gradients: GradientObj[] = [
 		colors: ["#396afc", "#2948ff"],
 	},
 	{
-		name: "Dull",
-		colors: ["#C9D6FF", "#E2E2E2"],
-	},
-	{
 		name: "Purpink",
 		colors: ["#7F00FF", "#E100FF"],
 	},
@@ -1396,10 +1388,6 @@ const gradients: GradientObj[] = [
 		colors: ["#2774ae", "#002E5D", "#002E5D"],
 	},
 	{
-		name: "Dark Blu Two",
-		colors: ["#004680", "#4484BA"],
-	},
-	{
 		name: "Lemon Lime",
 		colors: ["#7ec6bc", "#ebe717"],
 	},
@@ -1424,14 +1412,6 @@ const gradients: GradientObj[] = [
 		colors: ["#36B1C7", "#960B33"],
 	},
 	{
-		name: "Twitter",
-		colors: ["#1DA1F2", "#009ffc"],
-	},
-	{
-		name: "Blooze",
-		colors: ["#6da6be", "#4b859e", "#6da6be"],
-	},
-	{
 		name: "Blue Slate",
 		colors: ["#B5B9FF", "#2B2C49"],
 	},
@@ -1450,10 +1430,6 @@ const gradients: GradientObj[] = [
 	{
 		name: "Peach Sea",
 		colors: ["#E6AE8C", "#A8CECF"],
-	},
-	{
-		name: "Abbas",
-		colors: ["#00fff0", "#0083fe"],
 	},
 	{
 		name: "Winter Woods",
@@ -1494,14 +1470,6 @@ const gradients: GradientObj[] = [
 	{
 		name: "Racker",
 		colors: ["#EB0000", "#95008A", "#3300FC"],
-	},
-	{
-		name: "Neon Green",
-		colors: ["#81ff8a", "#64965e"],
-	},
-	{
-		name: "Dusty Grass",
-		colors: ["#d4fc79", "#96e6a1"],
 	},
 	{
 		name: "Visual Blue",

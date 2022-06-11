@@ -22,7 +22,7 @@ class Header extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: null,
+			user: "",
 		};
 	}
 
@@ -36,7 +36,6 @@ class Header extends Component {
 				this.setState({
 					user: user,
 				});
-				console.log("user is: ", user);
 			} else {
 				this.setState({
 					user: null,
