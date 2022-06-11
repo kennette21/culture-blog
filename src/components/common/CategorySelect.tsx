@@ -1,5 +1,5 @@
 import React from "react";
-import { Piece, PieceCategory } from "../../eventStore";
+import { PieceCategory } from "../../eventStore";
 import { GradientColors } from "../../gradients";
 import { FancySelect } from "../../styles";
 
@@ -14,7 +14,7 @@ const CategorySelect = ({
 	colors,
 	filter,
 	onChangeCategory,
-	showAllOption = true
+	showAllOption = true,
 }: Props) => {
 	return (
 		<FancySelect

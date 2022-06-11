@@ -2,12 +2,7 @@ import React, { Component } from "react";
 import { RouteComponentProps } from "@reach/router";
 import styled from "styled-components";
 import getBackgroundColors, { GradientColors } from "../gradients";
-import {
-	FancyBackground,
-	FancyInput,
-	FancyButton,
-	FancySelect,
-} from "../styles";
+import { FancyBackground, FancyInput, FancyButton } from "../styles";
 import firebase from "../firebase";
 import Header from "./common/Header";
 import Footer from "./common/Footer";

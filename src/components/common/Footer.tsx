@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 import { PieceCategory } from "../../eventStore";
 import { GradientColors } from "../../gradients";
@@ -23,12 +23,6 @@ const ColorFlag = styled.div`
 	font-size: 20px;
 	color: black;
 	background-color: sandybrown;
-`;
-
-const SplitContainer = styled.div`
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
 `;
 
 const LeftSide = styled.div`
