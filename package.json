@@ -19,7 +19,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^4.1.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "5.0.1",
     "react-svg": "^11.0.44",
     "react-toastify": "^6.2.0",
     "styled-components": "^5.1.1",
