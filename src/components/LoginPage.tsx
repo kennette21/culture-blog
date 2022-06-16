@@ -9,7 +9,7 @@ import {
 import firebase from "firebase";
 import { getBackgroundColors, GradientColors } from "../gradients";
 import Footer from "./common/Footer";
-import { RouteComponentProps } from "@reach/router";
+import { RouteComponentProps, navigate } from "@reach/router";
 
 const App = styled.div`
 	text-align: center;
@@ -61,7 +61,7 @@ class LoginPage extends Component<RouteComponentProps, LoginPageState> {
 				.auth()
 				.signInWithEmailAndPassword(username, password)
 				.then(() => {
-					window.location.href = "/random";
+					navigate("/random/all"); // todo: variables for the routes;
 				})
 				.catch((error) => {
 					console.log(
@@ -102,7 +102,7 @@ class LoginPage extends Component<RouteComponentProps, LoginPageState> {
 										e
 								)
 							)
-							.finally(() => (window.location.href = "/random"));
+							.finally(() => navigate("/random/all"));
 					} else {
 						console.log(
 							"couldnt create application user because no uid after creation"
@@ -134,6 +134,7 @@ class LoginPage extends Component<RouteComponentProps, LoginPageState> {
 		return (
 			<App className="App">
 				<FancyBackground colors={colors} className="App-content">
+					<div></div>
 					<form onSubmit={this.login}>
 						<div>
 							<FancyInput
