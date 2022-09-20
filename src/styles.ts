@@ -1,10 +1,6 @@
 import styled from "styled-components";
 import { GradientColors } from "./gradients";
 
-export const AppContainer = styled.div`
-	text-align: center;
-`;
-
 export interface FancyProps {
 	colors: GradientColors;
 }
@@ -22,8 +18,7 @@ export const FancyBackground = styled.div<FancyProps>`
 		${(props) => props.colors.second}
 	);
 	width: 100%;
-	height: 100%;
-	position: absolute;
+	height: 100vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

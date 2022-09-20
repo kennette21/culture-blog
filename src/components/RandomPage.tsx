@@ -3,9 +3,8 @@ import React, { Component } from "react";
 import { RouteComponentProps, navigate } from "@reach/router";
 import { getBackgroundColors, GradientColors } from "../gradients";
 import styled from "styled-components";
-import FancyBackground, { FancyProps } from "../styles";
-import Header from "./common/Header";
-import Footer from "./common/Footer";
+import { FancyProps } from "../styles";
+import AppContainer from "./common/AppContainer";
 import {
 	getRelevantPiece,
 	logEvent,
@@ -27,10 +26,6 @@ declare global {
 		iframely: any;
 	}
 }
-
-const App = styled.div`
-	text-align: center;
-`;
 
 const PieceContainer = styled.div`
 	width: 90%;
@@ -220,19 +215,23 @@ class RandomPage extends Component<RandomPageProps, RandomPageState> {
 		console.log("checking if cat in path: ", this.props.category);
 		const { colors } = this.state;
 		return (
-			<App className="App">
-				<ToastContainer
-					position="bottom-left"
-					autoClose={3000}
-					hideProgressBar={false}
-					newestOnTop={false}
-					closeOnClick
-					rtl={false}
-					pauseOnFocusLoss
-					draggable
-				/>
-				<FancyBackground colors={colors} className="App-content">
-					<Header />
+			<AppContainer
+				colors={colors}
+				onChangeCategory={this.selectCategory}
+				showFilter={true}
+				filter={this.props.category || "def"}
+			>
+				<>
+					<ToastContainer
+						position="bottom-left"
+						autoClose={3000}
+						hideProgressBar={false}
+						newestOnTop={false}
+						closeOnClick
+						rtl={false}
+						pauseOnFocusLoss
+						draggable
+					/>
 					<PieceContainer className="PieceContainer">
 						<PieceVisual className="Piece">
 							{this.getPieceSection()}
@@ -256,14 +255,8 @@ class RandomPage extends Component<RandomPageProps, RandomPageState> {
 							</ReactionButton>
 						</ActionsContainer>
 					</PieceContainer>
-					<Footer
-						colors={colors}
-						onChangeCategory={this.selectCategory}
-						showFilter={true}
-						filter={this.props.category || "def"}
-					/>
-				</FancyBackground>
-			</App>
+				</>
+			</AppContainer>
 		);
 	}
 }
